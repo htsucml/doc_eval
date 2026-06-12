@@ -23,32 +23,61 @@ def join_rows(predictions: list[dict], benchmark_rows: list[dict]) -> list[dict]
     return joined
 
 
-def markdown_table(summary_rows: list[dict], calibration_rows: list[dict]) -> str:
-    lines = [
-        "# Evaluation Summary",
-        "",
-        "| slice | count | exact_match | anls | relaxed_numeric | not_found_false_answer_rate | avg_latency_s |",
-        "| --- | ---: | ---: | ---: | ---: | ---: | ---: |",
-    ]
-    for row in summary_rows:
+def _format_metric(value: float | None) -> str:
+    return "-" if value is None else f"{value:.4f}"
+
+
+def _append_summary_section(lines: list[str], title: str, rows: list[dict]) -> None:
+    lines.extend(
+        [
+            title,
+            "",
+            "| slice | count | exact_match | anls | anls_n | relaxed_numeric | numeric_n | not_found_false_answer_rate | not_found_n | error_rate | avg_latency_s |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+        ]
+    )
+    for row in rows:
         lines.append(
-            "| {slice} | {count} | {exact_match:.4f} | {anls:.4f} | {relaxed_numeric:.4f} | {not_found_false_answer_rate:.4f} | {avg_latency_s:.4f} |".format(
-                **row
+            "| {slice} | {count} | {exact_match:.4f} | {anls} | {anls_applicable_count} | {relaxed_numeric} | {relaxed_numeric_applicable_count} | {not_found_false_answer_rate} | {not_found_applicable_count} | {error_rate:.4f} | {avg_latency_s:.4f} |".format(
+                slice=row["slice_name"],
+                count=row["count"],
+                exact_match=row["exact_match"],
+                anls=_format_metric(row["anls"]),
+                anls_applicable_count=row["anls_applicable_count"],
+                relaxed_numeric=_format_metric(row["relaxed_numeric"]),
+                relaxed_numeric_applicable_count=row["relaxed_numeric_applicable_count"],
+                not_found_false_answer_rate=_format_metric(row["not_found_false_answer_rate"]),
+                not_found_applicable_count=row["not_found_applicable_count"],
+                error_rate=row["error_rate"],
+                avg_latency_s=row["avg_latency_s"],
             )
         )
+
+
+def markdown_table(summary_rows: list[dict], calibration_rows: list[dict]) -> str:
+    overall_rows = [row for row in summary_rows if row["slice_type"] == "overall"]
+    capability_rows = [row for row in summary_rows if row["slice_type"] == "capability"]
+    answer_type_rows = [row for row in summary_rows if row["slice_type"] == "answer_type"]
+
+    lines = ["# Evaluation Summary", ""]
+    _append_summary_section(lines, "## Overall Metrics", overall_rows)
+    lines.extend([""])
+    _append_summary_section(lines, "## By Capability", capability_rows)
+    lines.extend([""])
+    _append_summary_section(lines, "## By Answer Type", answer_type_rows)
     lines.extend(["", "## Calibration Buckets", ""])
     if not calibration_rows:
         lines.append("No confidence values available.")
     else:
         lines.extend(
             [
-                "| bucket | count | avg_confidence | avg_accuracy | gap |",
-                "| --- | ---: | ---: | ---: | ---: |",
+                "| bucket | count | avg_confidence | avg_accuracy | gap | bucket_ece |",
+                "| --- | ---: | ---: | ---: | ---: | ---: |",
             ]
         )
         for row in calibration_rows:
             lines.append(
-                "| {bucket} | {count} | {avg_confidence:.4f} | {avg_accuracy:.4f} | {gap:.4f} |".format(
+                "| {bucket} | {count} | {avg_confidence:.4f} | {avg_accuracy:.4f} | {gap:.4f} | {bucket_ece:.4f} |".format(
                     **row
                 )
             )
@@ -63,13 +92,19 @@ def aggregate(preds_path: str, benchmark_path: str, csv_out: str, markdown_out: 
         csv_out,
         summary_rows,
         [
+            "slice_type",
+            "slice_name",
             "slice",
             "count",
             "exact_match",
             "anls",
+            "anls_applicable_count",
             "relaxed_numeric",
+            "relaxed_numeric_applicable_count",
             "not_found_false_answer_rate",
+            "not_found_applicable_count",
             "avg_latency_s",
+            "error_rate",
         ],
     )
     write_text(markdown_out, markdown_table(summary_rows, calibration_rows))

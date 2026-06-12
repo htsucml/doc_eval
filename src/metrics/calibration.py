@@ -26,14 +26,18 @@ def calibration_buckets(confidences: Iterable[float | None], correctness: Iterab
             continue
         avg_conf = sum(c for c, _ in members) / len(members)
         avg_acc = sum(a for _, a in members) / len(members)
+        gap = abs(avg_conf - avg_acc)
         bucketed.append(
             {
+                "bucket_index": bucket_index,
                 "bucket": f"{low:.1f}-{high:.1f}",
                 "count": len(members),
+                "lower_bound": round(low, 4),
+                "upper_bound": round(high, 4),
                 "avg_confidence": round(avg_conf, 4),
                 "avg_accuracy": round(avg_acc, 4),
-                "gap": round(abs(avg_conf - avg_acc), 4),
+                "gap": round(gap, 4),
+                "bucket_ece": round((len(members) / len(valid)) * gap, 4),
             }
         )
     return bucketed
-
