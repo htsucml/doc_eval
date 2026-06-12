@@ -82,7 +82,7 @@ def prepare_sample(sample: dict, prompt_mode: str) -> dict:
     return prepared
 
 
-def load_adapter(model_name: str, allow_real_models: bool):
+def load_adapter(model_name: str, allow_real_models: bool, runtime: dict | None = None):
     model_cfg = load_config_like_json("configs/models.yaml")["models"][model_name]
     adapter_name = model_cfg["adapter"]
     if model_cfg.get("allow_real_models_required") and not allow_real_models:
@@ -91,6 +91,7 @@ def load_adapter(model_name: str, allow_real_models: bool):
         )
     adapter_cls = ADAPTERS[adapter_name]
     adapter = adapter_cls(model_cfg)
+    adapter.runtime = runtime or {}
     adapter.load()
     return adapter, model_cfg
 
@@ -101,10 +102,18 @@ def run_eval(
     out_path: str,
     allow_real_models: bool = False,
     config_path: str = "configs/eval.yaml",
+    device: str = "cpu",
+    limit: int | None = None,
 ) -> tuple[str, str]:
     random.seed(7)
     benchmark_rows = load_jsonl(benchmark_path, validator=validate_benchmark_row)
-    adapter, model_cfg = load_adapter(model_name, allow_real_models)
+    if limit is not None:
+        benchmark_rows = benchmark_rows[:limit]
+    adapter, model_cfg = load_adapter(
+        model_name,
+        allow_real_models,
+        runtime={"device": device, "seed": 7},
+    )
     prompt_mode = resolve_prompt_mode(config_path)
 
     run_id = f"{model_name}-{uuid.uuid4().hex[:8]}"
@@ -150,8 +159,9 @@ def run_eval(
         "prompt_mode": prompt_mode,
         "python_version": platform.python_version(),
         "torch_version": optional_version("torch"),
-        "device": "cpu",
+        "device": device,
         "seed": 7,
+        "limit": limit,
         "cwd": os.getcwd(),
     }
     write_json(meta_path, metadata)
@@ -164,6 +174,8 @@ def main() -> None:
     parser.add_argument("--benchmark", required=True)
     parser.add_argument("--out", required=True)
     parser.add_argument("--config", default="configs/eval.yaml")
+    parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--device", choices=["cpu", "cuda", "mps"], default="cpu")
     parser.add_argument("--allow-real-models", action="store_true")
     args = parser.parse_args()
 
@@ -173,6 +185,8 @@ def main() -> None:
         out_path=args.out,
         allow_real_models=args.allow_real_models,
         config_path=args.config,
+        device=args.device,
+        limit=args.limit,
     )
     print(f"wrote_predictions={out_path}")
     print(f"wrote_metadata={meta_path}")

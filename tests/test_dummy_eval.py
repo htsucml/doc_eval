@@ -36,3 +36,13 @@ def test_dummy_eval_records_prompt_mode_from_config(tmp_path: Path) -> None:
     rows = load_jsonl(out_path, validator=validate_prediction_row)
     assert rows
     assert all(row["inference_config"]["prompt_mode"] == "image_plus_ocr" for row in rows)
+
+
+def test_dummy_eval_limit_and_device_metadata(tmp_path: Path) -> None:
+    benchmark = tmp_path / "bench.jsonl"
+    preds = tmp_path / "preds.jsonl"
+    build_benchmark(str(benchmark))
+    out_path, meta_path = run_eval("dummy", str(benchmark), str(preds), device="cpu", limit=3)
+    rows = load_jsonl(out_path, validator=validate_prediction_row)
+    assert len(rows) == 3
+    assert '"device": "cpu"' in Path(meta_path).read_text(encoding="utf-8")

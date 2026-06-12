@@ -1,7 +1,7 @@
 -r requirements.txt
+Pillow>=10.0
 torch>=2.2
 transformers>=4.44
 accelerate>=0.33
 peft>=0.12
 bitsandbytes>=0.43
-

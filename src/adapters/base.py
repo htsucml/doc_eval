@@ -13,6 +13,7 @@ class VLMAdapter(ABC):
 
     def __init__(self, config: Dict[str, Any] | None = None) -> None:
         self.config = config or {}
+        self.runtime: Dict[str, Any] = {}
 
     @property
     @abstractmethod
@@ -26,4 +27,3 @@ class VLMAdapter(ABC):
     @abstractmethod
     def generate(self, sample: Dict[str, Any]) -> Dict[str, Any]:
         """Run generation for one benchmark sample."""
-
