@@ -14,10 +14,9 @@ reports/*.md
 !reports/next_steps_v0.md
 data/raw/
 data/downloads/
-datasets/
-models/
-weights/
-huggingface/
+/datasets/
+/models/
+/weights/
+/huggingface/
 .cache/
-adapters/
-
+/adapters/
