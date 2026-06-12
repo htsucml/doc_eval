@@ -2,7 +2,7 @@
 
 ## Snapshot
 
-- git_commit: d52d034f9c8c3a8d0107e6937e5b8e9608c8c2b0
+- git_commit: d52d0345b649c57937fc967aef19f4a2143d6546
 - benchmark: `data/docminibench_v0.jsonl`
 - benchmark_sha256: `a03022faa968e32072abbe9eceaa01ed7a2ec1cc91cb22cdfb4b3162274aa596`
 - sample_count: 120
