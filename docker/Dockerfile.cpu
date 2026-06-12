@@ -1,0 +1,14 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN python -m pip install --upgrade pip \
+    && python -m pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD ["bash", "-lc", "pytest -q && python scripts/build_benchmark_v0.py --out data/fixtures/docminibench_sample.jsonl && python scripts/eval_model.py --model dummy --benchmark data/fixtures/docminibench_sample.jsonl --out outputs/dummy_preds.jsonl && python scripts/aggregate_results.py --preds outputs/dummy_preds.jsonl --benchmark data/fixtures/docminibench_sample.jsonl --out reports/dummy_results.csv --markdown reports/dummy_results.md"]
