@@ -56,3 +56,5 @@ data/fixtures/*.meta.json
 src/adapters/__pycache__/
 src/datasets/__pycache__/
 src/datasets/source_adapters/__pycache__/
+data/docminibench_v0_images/
+data/docminibench_v0_images*/

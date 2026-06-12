@@ -1,0 +1,38 @@
+{
+  "attempted_source_examples": {
+    "lmms-lab/ChartQA": 21,
+    "lmms-lab/DocVQA": 1104
+  },
+  "benchmark_name": "docminibench_v0",
+  "benchmark_path": "data/docminibench_v0.jsonl",
+  "benchmark_sha256": "a03022faa968e32072abbe9eceaa01ed7a2ec1cc91cb22cdfb4b3162274aa596",
+  "errors": [],
+  "image_dir": "data/docminibench_v0_images",
+  "limitations": [
+    "builder_elapsed_seconds=99.8"
+  ],
+  "minimum_acceptable_count": 80,
+  "mode": "real_hf",
+  "row_count": 120,
+  "sample_counts": {
+    "chart_numeric": 20,
+    "domain_terms": 20,
+    "layout_binding": 20,
+    "not_found": 20,
+    "ocr_exact": 20,
+    "table_lookup": 20
+  },
+  "source_datasets": [
+    "lmms-lab/DocVQA",
+    "lmms-lab/ChartQA"
+  ],
+  "split_names": {
+    "lmms-lab/ChartQA": [
+      "default:test"
+    ],
+    "lmms-lab/DocVQA": [
+      "DocVQA:validation"
+    ]
+  },
+  "target_count": 120
+}
