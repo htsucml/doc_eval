@@ -7,6 +7,7 @@ __pycache__/
 .env
 .venv/
 venv/
+.worktrees/
 outputs/
 reports/*.csv
 reports/*.md
@@ -27,3 +28,6 @@ data/fixtures/*.meta.json
 !src/adapters/**
 !src/datasets/
 !src/datasets/**
+src/adapters/__pycache__/
+src/datasets/__pycache__/
+src/datasets/source_adapters/__pycache__/
