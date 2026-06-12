@@ -2,6 +2,6 @@
   "seed": 7,
   "device": "cpu",
   "default_temperature": 0.0,
+  "prompt_mode": "image_only",
   "notes": "CPU-safe defaults for deterministic milestone runs."
 }
-
