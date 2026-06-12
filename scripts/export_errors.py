@@ -26,18 +26,20 @@ def export_errors(preds_path: str, benchmark_path: str, out_path: str) -> str:
     lines = [
         "# Error Report",
         "",
-        "| capability | id | answer_type | question | ground_truth | parsed_answer | failure_type | failure_hint | confidence | error |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- |",
+        "| capability | id | answer_type | question | ground_truth | parsed_answer | strict_exact_match | answer_in_output | failure_type | failure_hint | confidence | error |",
+        "| --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | ---: | --- |",
     ]
     for row in error_rows:
         lines.append(
-            "| {capability} | {id} | {answer_type} | {question} | {ground_truth} | {parsed_answer} | {failure_type} | {hint} | {confidence} | {error} |".format(
+            "| {capability} | {id} | {answer_type} | {question} | {ground_truth} | {parsed_answer} | {exact_match:.1f} | {answer_in_output:.1f} | {failure_type} | {hint} | {confidence} | {error} |".format(
                 capability=row["capability"],
                 id=row["id"],
                 answer_type=row["answer_type"],
                 question=row["question"].replace("|", "/"),
                 ground_truth=", ".join(row["answers"]).replace("|", "/"),
                 parsed_answer=str(row["parsed_answer"]).replace("|", "/"),
+                exact_match=row["exact_match"],
+                answer_in_output=row["answer_in_output"],
                 failure_type=(row["failure_type"] or "").replace("|", "/"),
                 hint=failure_hint(row).replace("|", "/"),
                 confidence="" if row.get("confidence") is None else f"{float(row['confidence']):.2f}",

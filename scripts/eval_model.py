@@ -35,6 +35,10 @@ ADAPTERS = {
 }
 
 PROMPT_MODES = {"image_only", "image_plus_ocr"}
+FINAL_ANSWER_INSTRUCTION = (
+    "Answer only with the final value. "
+    "If the document does not contain enough evidence, answer exactly NOT_FOUND."
+)
 
 
 def get_git_commit() -> str | None:
@@ -67,18 +71,32 @@ def resolve_prompt_mode(config_path: str) -> str:
     return prompt_mode
 
 
-def prepare_sample(sample: dict, prompt_mode: str) -> dict:
+def resolve_eval_config(config_path: str) -> dict:
+    eval_cfg = load_config_like_json(config_path)
+    prompt_mode = eval_cfg.get("prompt_mode", "image_only")
+    if prompt_mode not in PROMPT_MODES:
+        raise ValueError(
+            f"Unsupported prompt_mode '{prompt_mode}'. Expected one of {sorted(PROMPT_MODES)}."
+        )
+    instruction = str(eval_cfg.get("answer_instruction", FINAL_ANSWER_INSTRUCTION)).strip()
+    if not instruction:
+        raise ValueError("answer_instruction must be non-empty")
+    return {"prompt_mode": prompt_mode, "answer_instruction": instruction}
+
+
+def prepare_sample(sample: dict, prompt_mode: str, answer_instruction: str = FINAL_ANSWER_INSTRUCTION) -> dict:
     prepared = copy.deepcopy(sample)
     ocr_text = prepared.get("metadata", {}).get("ocr_text")
     prepared["prompt_mode"] = prompt_mode
+    question = f"{prepared['question']}\n\n{answer_instruction}"
     if prompt_mode == "image_plus_ocr" and ocr_text:
         prepared["prompt_text"] = (
-            f"{prepared['question']}\n\n"
+            f"{question}\n\n"
             "OCR text extracted from the page:\n"
             f"{ocr_text}"
         )
     else:
-        prepared["prompt_text"] = prepared["question"]
+        prepared["prompt_text"] = question
     return prepared
 
 
@@ -104,9 +122,12 @@ def run_eval(
     config_path: str = "configs/eval.yaml",
     device: str = "cpu",
     limit: int | None = None,
+    capability: str | None = None,
 ) -> tuple[str, str]:
     random.seed(7)
     benchmark_rows = load_jsonl(benchmark_path, validator=validate_benchmark_row)
+    if capability is not None:
+        benchmark_rows = [row for row in benchmark_rows if row["capability"] == capability]
     if limit is not None:
         benchmark_rows = benchmark_rows[:limit]
     adapter, model_cfg = load_adapter(
@@ -114,12 +135,14 @@ def run_eval(
         allow_real_models,
         runtime={"device": device, "seed": 7},
     )
-    prompt_mode = resolve_prompt_mode(config_path)
+    eval_cfg = resolve_eval_config(config_path)
+    prompt_mode = eval_cfg["prompt_mode"]
+    answer_instruction = eval_cfg["answer_instruction"]
 
     run_id = f"{model_name}-{uuid.uuid4().hex[:8]}"
     predictions = []
     for sample in benchmark_rows:
-        prepared_sample = prepare_sample(sample, prompt_mode)
+        prepared_sample = prepare_sample(sample, prompt_mode, answer_instruction=answer_instruction)
         try:
             result = adapter.generate(prepared_sample)
             inference_config = dict(result.get("inference_config") or {})
@@ -157,11 +180,13 @@ def run_eval(
         "benchmark_sha256": sha256_file(benchmark_path),
         "config_path": config_path,
         "prompt_mode": prompt_mode,
+        "answer_instruction": answer_instruction,
         "python_version": platform.python_version(),
         "torch_version": optional_version("torch"),
         "device": device,
         "seed": 7,
         "limit": limit,
+        "capability": capability,
         "cwd": os.getcwd(),
     }
     write_json(meta_path, metadata)
@@ -175,6 +200,7 @@ def main() -> None:
     parser.add_argument("--out", required=True)
     parser.add_argument("--config", default="configs/eval.yaml")
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--capability", default=None)
     parser.add_argument("--device", choices=["cpu", "cuda", "mps"], default="cpu")
     parser.add_argument("--allow-real-models", action="store_true")
     args = parser.parse_args()
@@ -187,6 +213,7 @@ def main() -> None:
         config_path=args.config,
         device=args.device,
         limit=args.limit,
+        capability=args.capability,
     )
     print(f"wrote_predictions={out_path}")
     print(f"wrote_metadata={meta_path}")

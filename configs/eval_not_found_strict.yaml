@@ -1,0 +1,8 @@
+{
+  "seed": 7,
+  "device": "cpu",
+  "default_temperature": 0.0,
+  "prompt_mode": "image_only",
+  "answer_instruction": "Answer exactly NOT_FOUND unless the requested field is explicitly visible in the document. If the field is absent, ambiguous, unreadable, or only inferable from common sense, answer exactly NOT_FOUND. Do not guess. Do not explain.",
+  "notes": "Bounded NOT_FOUND prompt ablation for abstention discipline."
+}

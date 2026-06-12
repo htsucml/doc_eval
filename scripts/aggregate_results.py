@@ -32,16 +32,17 @@ def _append_summary_section(lines: list[str], title: str, rows: list[dict]) -> N
         [
             title,
             "",
-            "| slice | count | exact_match | anls | anls_n | relaxed_numeric | numeric_n | not_found_false_answer_rate | not_found_n | error_rate | avg_latency_s |",
-            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+            "| slice | count | strict_exact_match | answer_in_output | anls | anls_n | relaxed_numeric | numeric_n | not_found_false_answer_rate | not_found_n | error_rate | avg_latency_s |",
+            "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
         ]
     )
     for row in rows:
         lines.append(
-            "| {slice} | {count} | {exact_match:.4f} | {anls} | {anls_applicable_count} | {relaxed_numeric} | {relaxed_numeric_applicable_count} | {not_found_false_answer_rate} | {not_found_applicable_count} | {error_rate:.4f} | {avg_latency_s:.4f} |".format(
+            "| {slice} | {count} | {exact_match:.4f} | {answer_in_output:.4f} | {anls} | {anls_applicable_count} | {relaxed_numeric} | {relaxed_numeric_applicable_count} | {not_found_false_answer_rate} | {not_found_applicable_count} | {error_rate:.4f} | {avg_latency_s:.4f} |".format(
                 slice=row["slice_name"],
                 count=row["count"],
                 exact_match=row["exact_match"],
+                answer_in_output=row["answer_in_output"],
                 anls=_format_metric(row["anls"]),
                 anls_applicable_count=row["anls_applicable_count"],
                 relaxed_numeric=_format_metric(row["relaxed_numeric"]),
@@ -97,6 +98,7 @@ def aggregate(preds_path: str, benchmark_path: str, csv_out: str, markdown_out: 
             "slice",
             "count",
             "exact_match",
+            "answer_in_output",
             "anls",
             "anls_applicable_count",
             "relaxed_numeric",

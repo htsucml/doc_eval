@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from scripts.build_benchmark_v0 import build_benchmark
+from scripts.eval_model import FINAL_ANSWER_INSTRUCTION, prepare_sample
 from scripts.eval_model import run_eval
 from src.datasets.jsonl_dataset import load_jsonl
 from src.datasets.schema import validate_prediction_row
@@ -38,6 +39,15 @@ def test_dummy_eval_records_prompt_mode_from_config(tmp_path: Path) -> None:
     assert all(row["inference_config"]["prompt_mode"] == "image_plus_ocr" for row in rows)
 
 
+def test_prepare_sample_adds_final_answer_instruction() -> None:
+    sample = {
+        "question": "What is the invoice ID?",
+        "metadata": {},
+    }
+    prepared = prepare_sample(sample, "image_only")
+    assert FINAL_ANSWER_INSTRUCTION in prepared["prompt_text"]
+
+
 def test_dummy_eval_limit_and_device_metadata(tmp_path: Path) -> None:
     benchmark = tmp_path / "bench.jsonl"
     preds = tmp_path / "preds.jsonl"
@@ -46,3 +56,14 @@ def test_dummy_eval_limit_and_device_metadata(tmp_path: Path) -> None:
     rows = load_jsonl(out_path, validator=validate_prediction_row)
     assert len(rows) == 3
     assert '"device": "cpu"' in Path(meta_path).read_text(encoding="utf-8")
+
+
+def test_dummy_eval_capability_filter(tmp_path: Path) -> None:
+    benchmark = tmp_path / "bench.jsonl"
+    preds = tmp_path / "preds.jsonl"
+    build_benchmark(str(benchmark))
+    out_path, meta_path = run_eval("dummy", str(benchmark), str(preds), capability="not_found")
+    rows = load_jsonl(out_path, validator=validate_prediction_row)
+    assert len(rows) == 1
+    assert rows[0]["sample_id"] == "notfound-1"
+    assert '"capability": "not_found"' in Path(meta_path).read_text(encoding="utf-8")

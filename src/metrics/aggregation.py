@@ -8,6 +8,7 @@ from typing import Any, Dict, Iterable, List
 
 from src.metrics.anls import anls_score
 from src.metrics.calibration import calibration_buckets
+from src.metrics.containment import answer_in_output
 from src.metrics.exact_match import exact_match
 from src.metrics.normalization import is_anls_applicable, is_not_found_response, is_numeric_answer_type, normalize_text
 from src.metrics.relaxed_numeric import parse_number, relaxed_numeric_score
@@ -62,6 +63,7 @@ def score_joined_rows(rows: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
         scored_row = {
             **row,
             "exact_match": exact,
+            "answer_in_output": answer_in_output(row["parsed_answer"], row["answers"], answer_type=answer_type),
             "anls": anls_score(row["parsed_answer"], row["answers"], answer_type=answer_type) if anls_applicable else None,
             "anls_applicable": anls_applicable,
             "relaxed_numeric": relaxed_numeric_score(row["parsed_answer"], row["answers"]) if numeric_applicable else None,
@@ -108,6 +110,7 @@ def _summarize_bucket(slice_type: str, slice_name: str, rows: List[Dict[str, Any
             "slice": slice_name,
             "count": 0,
             "exact_match": 0.0,
+            "answer_in_output": 0.0,
             "anls": None,
             "anls_applicable_count": 0,
             "relaxed_numeric": None,
@@ -127,6 +130,7 @@ def _summarize_bucket(slice_type: str, slice_name: str, rows: List[Dict[str, Any
         "slice": slice_name,
         "count": len(rows),
         "exact_match": round(mean(row["exact_match"] for row in rows), 4),
+        "answer_in_output": round(mean(row["answer_in_output"] for row in rows), 4),
         "anls": _mean_or_none(anls_values),
         "anls_applicable_count": len(anls_values),
         "relaxed_numeric": _mean_or_none(numeric_values),

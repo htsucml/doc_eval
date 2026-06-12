@@ -31,6 +31,7 @@ def test_aggregate_outputs_summary(tmp_path: Path) -> None:
     assert summary_rows[0]["slice_type"] == "overall"
     assert any(row["slice_type"] == "capability" and row["slice_name"] == "not_found" for row in summary_rows)
     assert any(row["slice_type"] == "answer_type" and row["slice_name"] == "currency" for row in summary_rows)
+    assert "answer_in_output" in summary_rows[0]
     assert csv_out.exists()
     assert markdown_out.exists()
     assert errors_out.exists()
