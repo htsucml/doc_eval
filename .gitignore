@@ -13,6 +13,7 @@ reports/*.md
 !reports/survey_matrix_v0.md
 !reports/next_steps_v0.md
 !reports/dataset_plan_v0.md
+!reports/improvement_plan_v0.md
 data/raw/
 data/downloads/
 data/fixtures/*.meta.json

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import os
 import platform
 import random
@@ -10,6 +11,7 @@ import subprocess
 import sys
 import uuid
 from datetime import datetime, timezone
+from importlib import metadata
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -32,6 +34,8 @@ ADAPTERS = {
     "llava_ov": LlavaOVAdapter,
 }
 
+PROMPT_MODES = {"image_only", "image_plus_ocr"}
+
 
 def get_git_commit() -> str | None:
     try:
@@ -48,10 +52,34 @@ def get_git_commit() -> str | None:
 
 def optional_version(module_name: str) -> str | None:
     try:
-        module = __import__(module_name)
+        return metadata.version(module_name)
     except Exception:
         return None
-    return getattr(module, "__version__", None)
+
+
+def resolve_prompt_mode(config_path: str) -> str:
+    eval_cfg = load_config_like_json(config_path)
+    prompt_mode = eval_cfg.get("prompt_mode", "image_only")
+    if prompt_mode not in PROMPT_MODES:
+        raise ValueError(
+            f"Unsupported prompt_mode '{prompt_mode}'. Expected one of {sorted(PROMPT_MODES)}."
+        )
+    return prompt_mode
+
+
+def prepare_sample(sample: dict, prompt_mode: str) -> dict:
+    prepared = copy.deepcopy(sample)
+    ocr_text = prepared.get("metadata", {}).get("ocr_text")
+    prepared["prompt_mode"] = prompt_mode
+    if prompt_mode == "image_plus_ocr" and ocr_text:
+        prepared["prompt_text"] = (
+            f"{prepared['question']}\n\n"
+            "OCR text extracted from the page:\n"
+            f"{ocr_text}"
+        )
+    else:
+        prepared["prompt_text"] = prepared["question"]
+    return prepared
 
 
 def load_adapter(model_name: str, allow_real_models: bool):
@@ -67,21 +95,32 @@ def load_adapter(model_name: str, allow_real_models: bool):
     return adapter, model_cfg
 
 
-def run_eval(model_name: str, benchmark_path: str, out_path: str, allow_real_models: bool = False) -> tuple[str, str]:
+def run_eval(
+    model_name: str,
+    benchmark_path: str,
+    out_path: str,
+    allow_real_models: bool = False,
+    config_path: str = "configs/eval.yaml",
+) -> tuple[str, str]:
     random.seed(7)
     benchmark_rows = load_jsonl(benchmark_path, validator=validate_benchmark_row)
     adapter, model_cfg = load_adapter(model_name, allow_real_models)
+    prompt_mode = resolve_prompt_mode(config_path)
 
     run_id = f"{model_name}-{uuid.uuid4().hex[:8]}"
     predictions = []
     for sample in benchmark_rows:
+        prepared_sample = prepare_sample(sample, prompt_mode)
         try:
-            result = adapter.generate(sample)
+            result = adapter.generate(prepared_sample)
+            inference_config = dict(result.get("inference_config") or {})
+            inference_config["prompt_mode"] = prompt_mode
             payload = {
                 "run_id": run_id,
                 "model_id": adapter.model_id,
                 "sample_id": sample["id"],
                 **result,
+                "inference_config": inference_config,
             }
         except Exception as exc:
             payload = {
@@ -93,7 +132,7 @@ def run_eval(model_name: str, benchmark_path: str, out_path: str, allow_real_mod
                 "confidence": None,
                 "latency_s": 0.0,
                 "error": str(exc),
-                "inference_config": {},
+                "inference_config": {"prompt_mode": prompt_mode},
             }
         predictions.append(validate_prediction_row(payload))
 
@@ -107,6 +146,8 @@ def run_eval(model_name: str, benchmark_path: str, out_path: str, allow_real_mod
         "model_config": model_cfg,
         "benchmark_path": benchmark_path,
         "benchmark_sha256": sha256_file(benchmark_path),
+        "config_path": config_path,
+        "prompt_mode": prompt_mode,
         "python_version": platform.python_version(),
         "torch_version": optional_version("torch"),
         "device": "cpu",
@@ -122,6 +163,7 @@ def main() -> None:
     parser.add_argument("--model", required=True)
     parser.add_argument("--benchmark", required=True)
     parser.add_argument("--out", required=True)
+    parser.add_argument("--config", default="configs/eval.yaml")
     parser.add_argument("--allow-real-models", action="store_true")
     args = parser.parse_args()
 
@@ -130,6 +172,7 @@ def main() -> None:
         benchmark_path=args.benchmark,
         out_path=args.out,
         allow_real_models=args.allow_real_models,
+        config_path=args.config,
     )
     print(f"wrote_predictions={out_path}")
     print(f"wrote_metadata={meta_path}")

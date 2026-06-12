@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
 from typing import Any, Dict, Iterable
 
 
@@ -60,6 +59,8 @@ def validate_benchmark_row(row: Dict[str, Any]) -> Dict[str, Any]:
         raise ValueError(f"unsupported capability: {row['capability']}")
     if not isinstance(row["metadata"], dict):
         raise ValueError("benchmark.metadata must be a dict")
+    if "ocr_text" in row["metadata"] and not isinstance(row["metadata"]["ocr_text"], str):
+        raise ValueError("benchmark.metadata.ocr_text must be str when present")
     return row
 
 
