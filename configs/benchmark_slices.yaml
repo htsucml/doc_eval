@@ -1,41 +1,143 @@
 {
+  "benchmark_name": "docminibench_v0",
+  "default_mode": "fixture",
+  "notes": [
+    "Fixture mode is the default and should stay CPU-only with no external downloads.",
+    "Real source ingestion must remain opt-in and fail closed when a source adapter is incomplete."
+  ],
   "benchmark_slices": [
     {
-      "name": "docvqa_layout_v0",
-      "source": "DocVQA",
-      "focus": ["ocr_exact", "layout_binding"],
-      "notes": "Form-style document QA and field binding."
+      "name": "ocr_exact_v0",
+      "capability": "ocr_exact",
+      "metric": "exact_match",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "ocrbench",
+          "dataset": "OCRBench_or_TextVQA_style",
+          "status": "planned",
+          "enabled_by_default": false,
+          "notes": "Exact OCR spans, invoice IDs, and short alphanumeric strings."
+        },
+        {
+          "adapter": "docvqa",
+          "dataset": "DocVQA",
+          "status": "fixture_fallback",
+          "enabled_by_default": true,
+          "notes": "Document QA examples that behave like OCR-exact key lookup."
+        }
+      ]
     },
     {
-      "name": "infovqa_info_layout_v0",
-      "source": "InfoVQA",
-      "focus": ["layout_binding", "table_lookup"],
-      "notes": "Infographic and table-ish lookup behavior."
+      "name": "layout_binding_v0",
+      "capability": "layout_binding",
+      "metric": "exact_match",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "docvqa",
+          "dataset": "DocVQA",
+          "status": "preferred",
+          "enabled_by_default": true,
+          "notes": "Key-value and field binding questions over forms and receipts."
+        },
+        {
+          "adapter": "infovqa",
+          "dataset": "InfoVQA",
+          "status": "candidate",
+          "enabled_by_default": true,
+          "notes": "Infographic layout references and visually anchored lookup."
+        }
+      ]
     },
     {
-      "name": "chartqa_numeric_v0",
-      "source": "ChartQA",
-      "focus": ["chart_numeric"],
-      "notes": "Numeric extraction and comparison from charts."
+      "name": "table_lookup_v0",
+      "capability": "table_lookup",
+      "metric": "exact_match",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "infovqa",
+          "dataset": "InfoVQA",
+          "status": "preferred",
+          "enabled_by_default": true,
+          "notes": "Table-ish infographic questions and cell lookup."
+        },
+        {
+          "adapter": "docvqa",
+          "dataset": "DocVQA",
+          "status": "candidate",
+          "enabled_by_default": true,
+          "notes": "Document QA examples with table-like row/column structure."
+        }
+      ]
     },
     {
-      "name": "ocr_exactness_v0",
-      "source": "OCRBench_or_TextVQA_style",
-      "focus": ["ocr_exact", "domain_terms"],
-      "notes": "Exact string fidelity for short spans and identifiers."
+      "name": "chart_numeric_v0",
+      "capability": "chart_numeric",
+      "metric": "relaxed_numeric",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "chartqa",
+          "dataset": "ChartQA",
+          "status": "preferred",
+          "enabled_by_default": true,
+          "notes": "Numeric chart reading and comparison questions."
+        }
+      ]
     },
     {
-      "name": "not_found_stress_v0",
-      "source": "custom",
-      "focus": ["not_found"],
-      "notes": "Unanswerable queries and abstention behavior."
+      "name": "domain_terms_v0",
+      "capability": "domain_terms",
+      "metric": "exact_match",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "ocrbench",
+          "dataset": "OCRBench_or_TextVQA_style",
+          "status": "candidate",
+          "enabled_by_default": true,
+          "notes": "Short domain-specific codes and exact terminology."
+        },
+        {
+          "adapter": "docvqa",
+          "dataset": "DocVQA",
+          "status": "candidate",
+          "enabled_by_default": true,
+          "notes": "Key-value extraction with business or medical abbreviations."
+        }
+      ]
+    },
+    {
+      "name": "not_found_v0",
+      "capability": "not_found",
+      "metric": "not_found_false_answer_rate",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "custom_not_found",
+          "dataset": "custom_hallucination_stress",
+          "status": "preferred",
+          "enabled_by_default": true,
+          "notes": "Unanswerable prompts meant to test abstention discipline."
+        }
+      ]
     },
     {
       "name": "robustness_optional_v0",
-      "source": "custom_or_handwriting",
-      "focus": ["robustness_optional"],
-      "notes": "Optional handwriting or perturbation robustness slice."
+      "capability": "robustness_optional",
+      "metric": "exact_match",
+      "sample_size": 1,
+      "sources": [
+        {
+          "adapter": "robustness",
+          "dataset": "custom_or_handwriting",
+          "status": "optional",
+          "enabled_by_default": true,
+          "notes": "Optional handwriting, blur, or perturbation stress coverage."
+        }
+      ]
     }
   ]
 }
-

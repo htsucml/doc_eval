@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import pytest
 
-from src.datasets.schema import validate_benchmark_row, validate_prediction_row
+from src.datasets.schema import (
+    validate_benchmark_row,
+    validate_benchmark_rows,
+    validate_prediction_row,
+)
 
 
 def test_validate_benchmark_row_accepts_valid_row() -> None:
@@ -50,3 +54,17 @@ def test_validate_prediction_row_rejects_bad_confidence() -> None:
     with pytest.raises(ValueError):
         validate_prediction_row(row)
 
+
+def test_validate_benchmark_rows_rejects_duplicate_ids() -> None:
+    row = {
+        "id": "x",
+        "dataset": "fixture",
+        "image_path": "img.svg",
+        "question": "q",
+        "answers": ["a"],
+        "capability": "ocr_exact",
+        "answer_type": "short_text",
+        "metadata": {},
+    }
+    with pytest.raises(ValueError):
+        validate_benchmark_rows([row, row.copy()])

@@ -1,4 +1,4 @@
-"""Placeholder dataset builders and TODO markers for real slices."""
+"""Fixture benchmark rows plus TODO markers for real slices."""
 
 from __future__ import annotations
 
@@ -81,11 +81,11 @@ def build_fixture_benchmark() -> List[dict]:
         },
     ]
 
-
+def filter_fixture_rows(capabilities: set[str]) -> List[dict]:
+    return [row for row in build_fixture_benchmark() if row["capability"] in capabilities]
 def describe_real_dataset_todos() -> list[str]:
     return [
         "Add VLMEvalKit-compatible readers for DocVQA, InfoVQA, ChartQA, and OCRBench/TextVQA-style slices.",
         "Keep downloads behind explicit CLI flags and cache paths outside the repo.",
         "Preserve capability labels during benchmark materialization for slice-aware reporting.",
     ]
-

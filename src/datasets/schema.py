@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from typing import Any, Dict
+from typing import Any, Dict, Iterable
 
 
 CAPABILITIES = {
@@ -48,6 +49,9 @@ def _ensure_keys(row: Dict[str, Any], required: set[str], label: str) -> None:
 
 def validate_benchmark_row(row: Dict[str, Any]) -> Dict[str, Any]:
     _ensure_keys(row, BENCHMARK_REQUIRED_KEYS, "benchmark")
+    for key in ("id", "dataset", "image_path", "question", "answer_type"):
+        if not isinstance(row[key], str) or not row[key].strip():
+            raise ValueError(f"benchmark.{key} must be a non-empty string")
     if not isinstance(row["answers"], list) or not row["answers"] or not all(
         isinstance(item, str) for item in row["answers"]
     ):
@@ -59,8 +63,19 @@ def validate_benchmark_row(row: Dict[str, Any]) -> Dict[str, Any]:
     return row
 
 
+def validate_benchmark_rows(rows: Iterable[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    validated = [validate_benchmark_row(row) for row in rows]
+    ids = [row["id"] for row in validated]
+    if len(ids) != len(set(ids)):
+        raise ValueError("benchmark ids must be unique")
+    return validated
+
+
 def validate_prediction_row(row: Dict[str, Any]) -> Dict[str, Any]:
     _ensure_keys(row, PREDICTION_REQUIRED_KEYS, "prediction")
+    for key in ("run_id", "model_id", "sample_id", "raw_output", "parsed_answer"):
+        if not isinstance(row[key], str):
+            raise ValueError(f"prediction.{key} must be a string")
     if row["confidence"] is not None and not isinstance(row["confidence"], (int, float)):
         raise ValueError("prediction.confidence must be numeric or null")
     if not isinstance(row["latency_s"], (int, float)):
@@ -70,4 +85,3 @@ def validate_prediction_row(row: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(row["inference_config"], dict):
         raise ValueError("prediction.inference_config must be a dict")
     return row
-
