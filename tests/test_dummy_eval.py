@@ -18,3 +18,12 @@ def test_dummy_eval_produces_predictions(tmp_path: Path) -> None:
     assert any(row["sample_id"] == "notfound-1" for row in rows)
     assert Path(meta_path).exists()
 
+
+def test_dummy_eval_limit_and_device_metadata(tmp_path: Path) -> None:
+    benchmark = tmp_path / "bench.jsonl"
+    preds = tmp_path / "preds.jsonl"
+    build_benchmark(str(benchmark))
+    out_path, meta_path = run_eval("dummy", str(benchmark), str(preds), device="cpu", limit=3)
+    rows = load_jsonl(out_path, validator=validate_prediction_row)
+    assert len(rows) == 3
+    assert '"device": "cpu"' in Path(meta_path).read_text(encoding="utf-8")

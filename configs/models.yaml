@@ -11,6 +11,10 @@
       "hf_model_id": "HuggingFaceTB/SmolVLM-500M-Instruct",
       "display_name": "SmolVLM 500M Instruct",
       "max_params_b": 0.5,
+      "generation_kwargs": {
+        "max_new_tokens": 48,
+        "do_sample": false
+      },
       "allow_real_models_required": true
     },
     "smolvlm2_500m_video": {
@@ -36,4 +40,3 @@
     }
   }
 }
-
