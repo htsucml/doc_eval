@@ -1,0 +1,41 @@
+{
+  "benchmark_slices": [
+    {
+      "name": "docvqa_layout_v0",
+      "source": "DocVQA",
+      "focus": ["ocr_exact", "layout_binding"],
+      "notes": "Form-style document QA and field binding."
+    },
+    {
+      "name": "infovqa_info_layout_v0",
+      "source": "InfoVQA",
+      "focus": ["layout_binding", "table_lookup"],
+      "notes": "Infographic and table-ish lookup behavior."
+    },
+    {
+      "name": "chartqa_numeric_v0",
+      "source": "ChartQA",
+      "focus": ["chart_numeric"],
+      "notes": "Numeric extraction and comparison from charts."
+    },
+    {
+      "name": "ocr_exactness_v0",
+      "source": "OCRBench_or_TextVQA_style",
+      "focus": ["ocr_exact", "domain_terms"],
+      "notes": "Exact string fidelity for short spans and identifiers."
+    },
+    {
+      "name": "not_found_stress_v0",
+      "source": "custom",
+      "focus": ["not_found"],
+      "notes": "Unanswerable queries and abstention behavior."
+    },
+    {
+      "name": "robustness_optional_v0",
+      "source": "custom_or_handwriting",
+      "focus": ["robustness_optional"],
+      "notes": "Optional handwriting or perturbation robustness slice."
+    }
+  ]
+}
+

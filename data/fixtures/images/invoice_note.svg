@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <rect width="640" height="400" fill="#faf7ef"/>
+  <rect x="24" y="24" width="592" height="352" rx="10" fill="#ffffff" stroke="#333333" stroke-width="2"/>
+  <text x="44" y="62" font-family="monospace" font-size="24" fill="#111111">INVOICE</text>
+  <text x="44" y="98" font-family="monospace" font-size="18" fill="#111111">Invoice No: INV-001</text>
+  <text x="44" y="126" font-family="monospace" font-size="18" fill="#111111">Vendor: ACME Lab Supplies</text>
+  <text x="44" y="154" font-family="monospace" font-size="18" fill="#111111">PO Number: PO-77</text>
+  <text x="44" y="182" font-family="monospace" font-size="18" fill="#111111">Item: Printer Paper</text>
+  <text x="44" y="210" font-family="monospace" font-size="18" fill="#111111">Quantity: 8</text>
+  <text x="44" y="238" font-family="monospace" font-size="18" fill="#111111">Total Due: $42.00</text>
+  <text x="44" y="266" font-family="monospace" font-size="18" fill="#111111">CPT Code: 99213</text>
+  <text x="44" y="312" font-family="monospace" font-size="16" fill="#555555">No fax number shown in this document.</text>
+</svg>
+

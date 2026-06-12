@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="400" viewBox="0 0 640 400">
+  <rect width="640" height="400" fill="#eef6ff"/>
+  <rect x="40" y="40" width="560" height="280" fill="#ffffff" stroke="#224466" stroke-width="2"/>
+  <line x1="40" y1="100" x2="600" y2="100" stroke="#224466" stroke-width="2"/>
+  <line x1="240" y1="40" x2="240" y2="320" stroke="#224466" stroke-width="2"/>
+  <line x1="420" y1="40" x2="420" y2="320" stroke="#224466" stroke-width="2"/>
+  <text x="60" y="78" font-family="monospace" font-size="20">Item</text>
+  <text x="280" y="78" font-family="monospace" font-size="20">Qty</text>
+  <text x="470" y="78" font-family="monospace" font-size="20">Status</text>
+  <text x="60" y="150" font-family="monospace" font-size="18">Printer Paper</text>
+  <text x="300" y="150" font-family="monospace" font-size="18">8</text>
+  <text x="460" y="150" font-family="monospace" font-size="18">received</text>
+  <text x="60" y="200" font-family="monospace" font-size="18">Staples</text>
+  <text x="300" y="200" font-family="monospace" font-size="18">3</text>
+  <text x="460" y="200" font-family="monospace" font-size="18">received</text>
+</svg>
+

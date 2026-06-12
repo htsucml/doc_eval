@@ -1,0 +1,39 @@
+{
+  "models": {
+    "dummy": {
+      "adapter": "dummy",
+      "display_name": "Deterministic Dummy Adapter",
+      "supports_confidence": true,
+      "allow_real_models_required": false
+    },
+    "smolvlm_500m": {
+      "adapter": "smolvlm",
+      "hf_model_id": "HuggingFaceTB/SmolVLM-500M-Instruct",
+      "display_name": "SmolVLM 500M Instruct",
+      "max_params_b": 0.5,
+      "allow_real_models_required": true
+    },
+    "smolvlm2_500m_video": {
+      "adapter": "smolvlm",
+      "hf_model_id": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+      "display_name": "SmolVLM2 500M Video Instruct",
+      "max_params_b": 0.5,
+      "allow_real_models_required": true
+    },
+    "internvl2_5_1b": {
+      "adapter": "internvl",
+      "hf_model_id": "OpenGVLab/InternVL2_5-1B",
+      "display_name": "InternVL2.5 1B",
+      "max_params_b": 1.0,
+      "allow_real_models_required": true
+    },
+    "llava_ov_qwen2_0_5b": {
+      "adapter": "llava_ov",
+      "hf_model_id": "llava-hf/llava-onevision-qwen2-0.5b-ov-hf",
+      "display_name": "LLaVA-OneVision Qwen2 0.5B OV",
+      "max_params_b": 0.5,
+      "allow_real_models_required": true
+    }
+  }
+}
+

@@ -1,0 +1,7 @@
+{
+  "seed": 7,
+  "device": "cpu",
+  "default_temperature": 0.0,
+  "notes": "CPU-safe defaults for deterministic milestone runs."
+}
+
