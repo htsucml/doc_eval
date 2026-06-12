@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from src.metrics.exact_match import normalize_text
+from src.metrics.normalization import normalize_answer
 
 
 def _levenshtein(a: str, b: str) -> int:
@@ -24,15 +24,19 @@ def _levenshtein(a: str, b: str) -> int:
     return prev[-1]
 
 
-def anls_score(prediction: str, answers: list[str], threshold: float = 0.5) -> float:
-    pred = normalize_text(prediction)
+def anls_score(
+    prediction: str,
+    answers: list[str],
+    threshold: float = 0.5,
+    answer_type: str | None = None,
+) -> float:
+    pred = normalize_answer(prediction, answer_type=answer_type)
     best = 0.0
     for answer in answers:
-        truth = normalize_text(answer)
+        truth = normalize_answer(answer, answer_type=answer_type)
         if not truth and not pred:
             return 1.0
         denom = max(len(pred), len(truth), 1)
         score = 1.0 - (_levenshtein(pred, truth) / denom)
         best = max(best, score)
     return best if best >= threshold else 0.0
-

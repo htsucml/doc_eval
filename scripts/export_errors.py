@@ -1,4 +1,4 @@
-"""Export wrong predictions with lightweight failure hints."""
+"""Export wrong predictions with structured failure hints."""
 
 from __future__ import annotations
 
@@ -10,48 +10,38 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.datasets.jsonl_dataset import load_jsonl
 from src.datasets.schema import validate_benchmark_row, validate_prediction_row
-from src.metrics.exact_match import exact_match, normalize_text
-from src.metrics.relaxed_numeric import parse_number
+from src.metrics.aggregation import failure_hint, score_joined_rows
 from src.utils.io import write_text
-
-
-def failure_hint(row: dict) -> str:
-    if row["capability"] == "not_found" and normalize_text(row["parsed_answer"]) != "not_found":
-        return "Hallucinated answer when abstention was expected."
-    if row["capability"] == "table_lookup":
-        return "Likely row/column lookup error."
-    if row["capability"] == "chart_numeric":
-        return "Likely chart reading or comparison error."
-    if parse_number(row["parsed_answer"]) is not None:
-        return "Numeric mismatch beyond relaxed tolerance."
-    return "String mismatch; inspect OCR/layout grounding."
 
 
 def export_errors(preds_path: str, benchmark_path: str, out_path: str) -> str:
     predictions = load_jsonl(preds_path, validator=validate_prediction_row)
     benchmark_rows = load_jsonl(benchmark_path, validator=validate_benchmark_row)
     benchmark_by_id = {row["id"]: row for row in benchmark_rows}
+    joined = [{**benchmark_by_id[prediction["sample_id"]], **prediction} for prediction in predictions]
+    scored_rows = score_joined_rows(joined)
+    error_rows = [row for row in scored_rows if row["exact_match"] < 1.0]
+    error_rows.sort(key=lambda row: (row["capability"], row["failure_type"] or "", row["id"]))
 
     lines = [
         "# Error Report",
         "",
-        "| id | capability | question | ground_truth | parsed_answer | raw_output | failure_hint |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| capability | id | answer_type | question | ground_truth | parsed_answer | failure_type | failure_hint | confidence | error |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | ---: | --- |",
     ]
-    for prediction in predictions:
-        sample = benchmark_by_id[prediction["sample_id"]]
-        if exact_match(prediction["parsed_answer"], sample["answers"]) >= 1.0:
-            continue
-        row = {**sample, **prediction}
+    for row in error_rows:
         lines.append(
-            "| {id} | {capability} | {question} | {ground_truth} | {parsed_answer} | {raw_output} | {hint} |".format(
-                id=sample["id"],
-                capability=sample["capability"],
-                question=sample["question"].replace("|", "/"),
-                ground_truth=", ".join(sample["answers"]).replace("|", "/"),
-                parsed_answer=str(prediction["parsed_answer"]).replace("|", "/"),
-                raw_output=str(prediction["raw_output"]).replace("|", "/"),
+            "| {capability} | {id} | {answer_type} | {question} | {ground_truth} | {parsed_answer} | {failure_type} | {hint} | {confidence} | {error} |".format(
+                capability=row["capability"],
+                id=row["id"],
+                answer_type=row["answer_type"],
+                question=row["question"].replace("|", "/"),
+                ground_truth=", ".join(row["answers"]).replace("|", "/"),
+                parsed_answer=str(row["parsed_answer"]).replace("|", "/"),
+                failure_type=(row["failure_type"] or "").replace("|", "/"),
                 hint=failure_hint(row).replace("|", "/"),
+                confidence="" if row.get("confidence") is None else f"{float(row['confidence']):.2f}",
+                error=str(row.get("error") or "").replace("|", "/"),
             )
         )
     markdown = "\n".join(lines) + "\n"
