@@ -70,7 +70,9 @@ def score_joined_rows(rows: Iterable[Dict[str, Any]]) -> List[Dict[str, Any]]:
             "numeric_applicable": numeric_applicable,
             "gold_not_found": _gold_is_not_found(row),
             "pred_not_found": _pred_is_not_found(row),
-            "not_found_false_answer": 1.0 if _gold_is_not_found(row) and not _pred_is_not_found(row) else None,
+            "not_found_false_answer": (
+                1.0 if _gold_is_not_found(row) and not _pred_is_not_found(row) else 0.0 if _gold_is_not_found(row) else None
+            ),
         }
         scored_row["failure_type"] = failure_type(scored_row)
         scored_row["failure_hint"] = failure_hint(scored_row)

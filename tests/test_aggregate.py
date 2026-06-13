@@ -8,6 +8,7 @@ from scripts.analyze_next_steps import analyze
 from scripts.build_benchmark_v0 import build_benchmark
 from scripts.eval_model import run_eval
 from scripts.export_errors import export_errors
+from src.metrics.aggregation import score_joined_rows
 
 
 def test_aggregate_outputs_summary(tmp_path: Path) -> None:
@@ -42,3 +43,32 @@ def test_aggregate_outputs_summary(tmp_path: Path) -> None:
     assert any(row["slice_type"] == "answer_type" for row in csv_rows)
     assert "false_answer_on_unanswerable" in errors_out.read_text(encoding="utf-8")
     assert "Most common failure modes" in next_steps_out.read_text(encoding="utf-8")
+
+
+def test_not_found_false_answer_rate_counts_correct_abstentions() -> None:
+    rows = [
+        {
+            "id": "nf-ok",
+            "dataset": "fixture",
+            "image_path": "img.svg",
+            "question": "missing?",
+            "answers": ["NOT_FOUND"],
+            "capability": "not_found",
+            "answer_type": "abstain",
+            "metadata": {},
+            "run_id": "r",
+            "model_id": "m",
+            "sample_id": "nf-ok",
+            "raw_output": "NOT_FOUND",
+            "parsed_answer": "NOT_FOUND",
+            "confidence": None,
+            "latency_s": 0.1,
+            "error": None,
+            "inference_config": {},
+        }
+    ]
+
+    scored = score_joined_rows(rows)[0]
+
+    assert scored["exact_match"] == 1.0
+    assert scored["not_found_false_answer"] == 0.0

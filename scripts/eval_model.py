@@ -19,6 +19,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.adapters.dummy import DummyAdapter
 from src.adapters.internvl import InternVLAdapter
 from src.adapters.llava_ov import LlavaOVAdapter
+from src.adapters.qwen25vl import Qwen25VLAdapter
 from src.adapters.smolvlm import SmolVLMAdapter
 from src.datasets.jsonl_dataset import load_jsonl, write_jsonl
 from src.datasets.schema import validate_benchmark_row, validate_prediction_row
@@ -32,6 +33,7 @@ ADAPTERS = {
     "smolvlm": SmolVLMAdapter,
     "internvl": InternVLAdapter,
     "llava_ov": LlavaOVAdapter,
+    "qwen25vl": Qwen25VLAdapter,
 }
 
 PROMPT_MODES = {"image_only", "image_plus_ocr"}
