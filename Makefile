@@ -12,8 +12,11 @@ MINI_PREDS ?= outputs/reproduce_mini/$(MINI_MODEL)_controlled5_$(STAMP)_preds.js
 MINI_CSV ?= reports/reproduce_mini/$(MINI_MODEL)_controlled5_$(STAMP)_results.csv
 MINI_MD ?= reports/reproduce_mini/$(MINI_MODEL)_controlled5_$(STAMP)_results.md
 AGG_DIR ?= reports/aggregate_rebuild_$(STAMP)
+FULL_DEVICE ?= cuda
+FULL_REF_MODELS ?= 0
+FULL_TRAIN_STEPS ?= 100
 
-.PHONY: test smoke reproduce-mini aggregate paper clean-paper
+.PHONY: test smoke reproduce-mini aggregate setup-data verify-data check-full full print-results paper clean-paper
 
 test:
 	$(PYTHON) -m pytest -q
@@ -41,6 +44,21 @@ aggregate:
 	$(PYTHON) scripts/aggregate_results.py --preds outputs/smolvlm2_500m_video_docminibench_v0_strict_preds.jsonl --benchmark data/docminibench_v0.jsonl --out $(AGG_DIR)/smolvlm2_500m_video_docminibench_v0_strict_results.csv --markdown $(AGG_DIR)/smolvlm2_500m_video_docminibench_v0_strict_results.md
 	$(PYTHON) scripts/aggregate_results.py --preds outputs/smolvlm2_2_2b_docvqa_manual_notfound_combined_expanded_v0_preds.jsonl --benchmark data/docvqa_manual_notfound_combined_expanded_v0_eval.jsonl --out $(AGG_DIR)/smolvlm2_2_2b_docvqa_manual_notfound_combined_expanded_v0_results.csv --markdown $(AGG_DIR)/smolvlm2_2_2b_docvqa_manual_notfound_combined_expanded_v0_results.md
 	@echo "aggregate_dir=$(AGG_DIR)"
+
+setup-data:
+	PYTHON=$(PYTHON) bash scripts/setup_data_artifacts.sh
+
+verify-data:
+	$(PYTHON) scripts/audit_data_dependencies.py --report reports/data_setup_status.md
+
+check-full:
+	FULL_DEVICE=$(FULL_DEVICE) FULL_REF_MODELS=$(FULL_REF_MODELS) $(PYTHON) scripts/check_full_repro.py --device $(FULL_DEVICE) --ref-models $(FULL_REF_MODELS)
+
+full:
+	FULL_DEVICE=$(FULL_DEVICE) FULL_REF_MODELS=$(FULL_REF_MODELS) FULL_TRAIN_STEPS=$(FULL_TRAIN_STEPS) PYTHON=$(PYTHON) bash scripts/run_full_repro.sh
+
+print-results:
+	$(PYTHON) scripts/print_full_results.py
 
 paper:
 	$(PYTHON) scripts/build_paper_assets.py

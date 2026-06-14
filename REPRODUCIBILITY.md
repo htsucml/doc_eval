@@ -23,6 +23,15 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+Alternatively, use the lightweight cloud bootstrap:
+
+```bash
+bash scripts/bootstrap_cloud_repro.sh
+```
+
+The bootstrap script runs tests and CPU smoke only. It does not run full
+reproduction, real-model inference, or training.
+
 GPU reproduction on RunPod or a CUDA host:
 
 ```bash
@@ -57,6 +66,26 @@ The final packaged runs used `/workspace/hf_home`. Keep model caches off
 small `/root` disks.
 
 ## 4. Run Tests
+
+If the clone does not include external data/image artifacts, install them first:
+
+```bash
+make setup-data
+make verify-data
+```
+
+The default setup target uses these direct-download artifact URLs:
+
+```bash
+export DOC_EVAL_DATA_URL='https://www.dropbox.com/scl/fi/tu1a5eo7itq55nrrslahv/doc_eval_external_artifacts_20260614_data_v1.tgz?rlkey=mmjplcdgxe40yo25r0uke9xfg&st=1gf9foi1&dl=1'
+export DOC_EVAL_DATA_SHA256_URL='https://www.dropbox.com/scl/fi/gqhgo4sotzjk1u5muec5s/doc_eval_external_artifacts_20260614_data_v1.sha256?rlkey=ypmqr51094aqhphz3vyqrt4z8&st=4tgplkyu&dl=1'
+make setup-data
+```
+
+You may instead set `DOC_EVAL_DATA_SHA256=<hex>` to verify against a literal
+hash. The archive is expected to extract repo-root-relative paths such as
+`data/...`, `outputs/...`, and `reports/...`; it must not contain `.venv`,
+model weights, Hugging Face cache files, or local backups.
 
 ```bash
 make test
@@ -124,7 +153,60 @@ Expected output directory:
 This target does not rerun inference. It recomputes selected aggregate reports
 from existing prediction JSONL files.
 
-## 8. Build Paper
+## 8. Optional Full Experimental Reproduction
+
+This path is optional and is not required for quick validation. It can take
+1-3 hours with a warm cache and longer with a cold cache.
+
+Preflight only:
+
+```bash
+make check-full
+```
+
+Run the default full reproduction, which includes under-1B target models and
+the SmolVLM2 500M LoRA PoC but excludes large reference models:
+
+```bash
+FULL_REF_MODELS=0 make full
+make print-results
+```
+
+Optional reference-model reproduction:
+
+```bash
+FULL_REF_MODELS=1 make full
+make print-results
+```
+
+Expected output roots:
+
+- `outputs/full_repro/<timestamp>/`
+- `reports/full_repro/<timestamp>/`
+- `outputs/full_repro/latest`
+- `reports/full_repro/latest`
+
+Defaults:
+
+- `FULL_TRAIN_STEPS=100`
+- `FULL_REF_MODELS=0`
+- `FULL_LIMIT=` empty means full benchmark/set evaluation
+- `FULL_DEVICE=cuda`
+
+Cache behavior:
+
+- Respects `DOC_EVAL_CACHE_ROOT` if set.
+- Else prefers `/workspace/hf_home` only when `/workspace` exists and is
+  writable.
+- Else uses `HF_HOME` or `$HOME/.cache/doc_eval_hf`.
+- Exports `HF_HOME`, `HF_HUB_CACHE`, `HUGGINGFACE_HUB_CACHE`, and
+  `HF_DATASETS_CACHE`.
+
+The preflight reports the resolved cache path and free disk space. It does not
+fail merely because the cache is under `/root`; it fails only if the selected
+cache/output filesystem lacks enough free space for the requested mode.
+
+## 9. Build Paper
 
 ```bash
 make paper
@@ -141,7 +223,7 @@ Expected sources and generated artifacts:
 For official ACL formatting, place the official `acl.sty` in `paper/` or in a
 TeX search path. Without it, the source uses a minimal article fallback.
 
-## 9. Full Reproduction Notes
+## 10. Historical Full Reproduction Notes
 
 Full reproduction of all current real-model cells requires running the
 commands recorded in the latest handoffs:
@@ -154,7 +236,7 @@ commands recorded in the latest handoffs:
 Do not overwrite existing prediction outputs. Use explicit new filenames or
 timestamped directories for any fresh run.
 
-## 10. Validation Before Report Handoff
+## 11. Validation Before Report Handoff
 
 ```bash
 make test

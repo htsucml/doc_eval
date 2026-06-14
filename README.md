@@ -44,6 +44,13 @@ make test
 make smoke
 ```
 
+On a fresh cloud VM, the lightweight bootstrap wrapper performs the same
+CPU-safe setup/test/smoke path and does not download real models:
+
+```bash
+bash scripts/bootstrap_cloud_repro.sh
+```
+
 GPU evaluation environment, using the already validated torch/CUDA stack:
 
 ```bash
@@ -59,6 +66,26 @@ Do not install or replace torch/CUDA on an already configured RunPod unless you
 are intentionally rebuilding the environment.
 
 ## Quickstart
+
+Set up external data artifacts, if starting from a clean clone without bundled
+data/images:
+
+```bash
+make setup-data
+make verify-data
+```
+
+`make setup-data` downloads the documented artifact with `curl -L`, verifies
+SHA256, extracts repo-root-relative paths, and then runs `make verify-data`.
+The default artifact URLs are:
+
+```bash
+export DOC_EVAL_DATA_URL='https://www.dropbox.com/scl/fi/tu1a5eo7itq55nrrslahv/doc_eval_external_artifacts_20260614_data_v1.tgz?rlkey=mmjplcdgxe40yo25r0uke9xfg&st=1gf9foi1&dl=1'
+export DOC_EVAL_DATA_SHA256_URL='https://www.dropbox.com/scl/fi/gqhgo4sotzjk1u5muec5s/doc_eval_external_artifacts_20260614_data_v1.sha256?rlkey=ypmqr51094aqhphz3vyqrt4z8&st=4tgplkyu&dl=1'
+```
+
+Override `DOC_EVAL_DATA_SHA256` with a literal hash if you do not want to fetch
+the `.sha256` URL.
 
 Run all unit tests:
 
@@ -108,6 +135,54 @@ make aggregate
 
 This writes timestamped files under `reports/aggregate_rebuild_<timestamp>/`.
 
+## Optional Full Reproduction
+
+The full reproduction path is opt-in and is not part of quick smoke validation.
+It reruns headline experiments into fresh timestamped directories:
+
+- `outputs/full_repro/<timestamp>/`
+- `reports/full_repro/<timestamp>/`
+
+It also updates convenience symlinks:
+
+- `outputs/full_repro/latest`
+- `reports/full_repro/latest`
+
+Recommended clean-clone usage on a CUDA machine:
+
+```bash
+export DOC_EVAL_CACHE_ROOT=/workspace/hf_home  # recommended on cloud runners when available
+make check-full
+FULL_REF_MODELS=0 make full
+make print-results
+```
+
+Reference-only reproduction is disabled by default. To include SmolVLM2 2.2B
+and Qwen2.5-VL 3B:
+
+```bash
+FULL_REF_MODELS=1 make full
+```
+
+Defaults:
+
+- `FULL_TRAIN_STEPS=100`
+- `FULL_REF_MODELS=0`
+- `FULL_LIMIT=` means full benchmark/set evaluation
+- `FULL_DEVICE=cuda`
+
+`make full` runs tests, CPU smoke, zero-shot under-1B target evaluations, a
+SmolVLM2 500M LoRA PoC, adapted-model evaluation, bounded abstention-margin
+diagnostics, and compact result printing. It does not overwrite frozen
+historical `outputs/*.jsonl` or `reports/*.md`; all new files go under the
+timestamped full-reproduction directories.
+
+Expected runtime is roughly 1-3 hours with warm model cache and longer with a
+cold cache. Disk needs depend on whether reference models are enabled. Sharing a
+Hugging Face cache is encouraged, but not required. If `DOC_EVAL_CACHE_ROOT` is
+unset, the scripts prefer `/workspace/hf_home` when `/workspace` exists and is
+writable; otherwise they use `HF_HOME` or a normal user-cache path.
+
 Build the paper tables and PDF if LaTeX is installed:
 
 ```bash
@@ -145,8 +220,9 @@ Paper source:
 - CPU is sufficient for `make test` and `make smoke`.
 - `make reproduce-mini` is optional and requires CUDA. Full real-model
   reproduction requires more GPU time and storage.
-- The validated cache route is `/workspace/hf_home`; keep Hugging Face caches
-  off `/root` on small RunPod root disks.
+- `/workspace/hf_home` is the recommended cloud cache default when available;
+  local machines can use a normal user cache. Full preflight fails only when the
+  selected cache filesystem lacks enough free space.
 - SmolVLM2 500M fits on modest CUDA devices. SmolVLM2 2.2B and Qwen2.5-VL 3B
   require more VRAM and should be treated as reference-only runs.
 
