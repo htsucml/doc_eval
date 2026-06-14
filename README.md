@@ -249,6 +249,37 @@ Paper source:
   `.venv` is not a CUDA-capable full-reproduction environment. Install the
   CUDA torch wheel appropriate for the host or activate the validated GPU env,
   then rerun `make check-full`.
+- `make check-full` reports `torch.cuda.is_available() is false` or an
+  "NVIDIA driver too old" CUDA initialization warning: this is an
+  environment/wheel/driver mismatch, not a benchmark-data issue. The default
+  `make env` target is intentionally lightweight for CPU/data/smoke validation;
+  `make check-full` and `make full` require CUDA-enabled PyTorch compatible
+  with the host NVIDIA driver. On the RunPod image used for this project, CUDA
+  12.6 PyTorch wheels were an example compatible fix:
+
+  ```bash
+  .venv/bin/python -m pip uninstall -y torch torchvision torchaudio
+
+  .venv/bin/python -m pip install \
+    torch torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/cu126
+  ```
+
+  Verify the active environment before full reproduction:
+
+  ```bash
+  .venv/bin/python - <<'PY'
+  import torch
+  print("torch:", torch.__version__)
+  print("torch.version.cuda:", torch.version.cuda)
+  print("cuda available:", torch.cuda.is_available())
+  print("device count:", torch.cuda.device_count())
+  if torch.cuda.is_available():
+      print("device:", torch.cuda.get_device_name(0))
+  PY
+
+  make check-full
+  ```
 - `Model ... is gated`: real models require `--allow-real-models`; tests and
   smoke intentionally avoid this path.
 - Hugging Face downloads fill `/root`: export `HF_HOME=/workspace/hf_home` and

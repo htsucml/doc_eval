@@ -217,6 +217,37 @@ for the host installed or selected explicitly before full reproduction.
 `make print-results` skips failed or incomplete timestamp directories and only
 prints completed full-reproduction runs.
 
+If `make check-full` reports `torch.cuda.is_available() is false` or a CUDA
+initialization warning such as "NVIDIA driver too old," treat it as a local
+environment/wheel/driver mismatch. The default `make env` target is lightweight
+and intended for CPU/data/smoke validation. Full GPU reproduction requires
+CUDA-enabled PyTorch compatible with the host NVIDIA driver. On the RunPod image
+used here, CUDA 12.6 PyTorch wheels were an example compatible fix:
+
+```bash
+.venv/bin/python -m pip uninstall -y torch torchvision torchaudio
+
+.venv/bin/python -m pip install \
+  torch torchvision torchaudio \
+  --index-url https://download.pytorch.org/whl/cu126
+```
+
+Verify the active environment before full reproduction:
+
+```bash
+.venv/bin/python - <<'PY'
+import torch
+print("torch:", torch.__version__)
+print("torch.version.cuda:", torch.version.cuda)
+print("cuda available:", torch.cuda.is_available())
+print("device count:", torch.cuda.device_count())
+if torch.cuda.is_available():
+    print("device:", torch.cuda.get_device_name(0))
+PY
+
+make check-full
+```
+
 ## 9. Build Paper
 
 ```bash
