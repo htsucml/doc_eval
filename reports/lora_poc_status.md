@@ -1,25 +1,31 @@
-# Step 5 LoRA Evaluation Status
+# LoRA SFT PoC Results
 
-- Timestamp UTC: `2026-06-13T16:45:40.899931+00:00`
-- Status: `completed`
-- Adapter path: `outputs/lora_sft_poc_real/smolvlm2_500m_video_20260613T162714Z`
-- Reload verified before evaluation: `True`
-- Note: first controlled adapted eval wrote an error-only prediction file due to `peft_adapter_path` leaking into generation kwargs; it was preserved and fixed output was written to `_fixed_preds.jsonl`.
+Updated UTC: `2026-06-14T06:52:02.249867+00:00`
 
-## Metrics
+This remains a bounded methodology PoC, not optimized full training. No evaluation rows or images were used for training.
 
-| Dataset | Rows | Exact match | Answer in output | NOT_FOUND false-answer | Error rate | Output |
-|---|---:|---:|---:|---:|---:|---|
-| Controlled NOT_FOUND, base SmolVLM2 500M | 50 | 0.02 | 0.02 | 0.98 | 0.0 | `outputs/smolvlm2_500m_video_notfound_controlled_v0_preds.jsonl` |
-| Controlled NOT_FOUND, LoRA fixed | 50 | 0.7 | 0.7 | 0.3 | 0.0 | `outputs/smolvlm2_500m_video_lora_real_notfound_controlled_v0_fixed_preds.jsonl` |
-| DocMiniBench-v0, base strict | 120 | 0.4417 | 0.475 | 1.0 | 0.0 | `outputs/smolvlm2_500m_video_docminibench_v0_strict_preds.jsonl` |
-| DocMiniBench-v0, LoRA | 120 | 0.5083 | 0.525 | 0.7 | 0.0 | `outputs/smolvlm2_500m_video_lora_real_docminibench_v0_preds.jsonl` |
-| Manual real-doc NOT_FOUND, LoRA | 85 | 0.1059 | 0.1059 | 0.8941 | 0.0 | `outputs/smolvlm2_500m_video_lora_real_docvqa_manual_notfound_combined_expanded_v0_preds.jsonl` |
-| OOD sanity NOT_FOUND, LoRA | 20 | 0.25 | 0.25 | 0.75 | 0.0 | `outputs/smolvlm2_500m_video_lora_real_notfound_ood_sanity_v0_preds.jsonl` |
+## Learning Curve Check
+
+| Checkpoint | Controlled false-answer | DocMiniBench exact | DocMiniBench NOT_FOUND false-answer | Manual real-doc false-answer | OOD false-answer | Over-abstention on DocMiniBench answerable |
+|---|---:|---:|---:|---:|---:|---:|
+| Base SmolVLM2 500M | 0.98 | 0.4417 | 1.0 | not run | not run | n/a |
+| LoRA 50 total steps | 0.3 | 0.5083 | 0.7 | 0.8941 | 0.75 | 0.0100 (1/100) |
+| LoRA 100 total steps | 0.1 | 0.5333 | 0.55 | 0.6235 | 0.2 | 0.0200 (2/100) |
+
+## Checkpoints
+
+- 50-step adapter: `outputs/lora_sft_poc_real/smolvlm2_500m_video_20260613T162714Z`
+- 100-total-step adapter: `outputs/lora_sft_poc_real_continued/smolvlm2_500m_video_continued_20260614T063401Z`
+- The 100-step adapter was continued from the 50-step adapter using the same controlled synthetic train/val data.
 
 ## Interpretation
 
-- The 50-step synthetic LoRA PoC improved controlled synthetic NOT_FOUND for SmolVLM2 500M from mostly false-answering to `0.30` false-answer rate.
-- The same adapter did not transfer well to manual real-doc NOT_FOUND (`0.8941` false-answer rate) or OOD sanity (`0.75`).
-- DocMiniBench-v0 overall stayed close to base, but the old demoted NOT_FOUND slice worsened; this slice remains exploratory/demoted because its absence provenance is weak.
-- This is a bounded methodology PoC, not optimized training.
+- Controlled synthetic NOT_FOUND improved monotonically from base `0.98` false-answer rate to `0.30` at 50 steps and `0.10` at 100 steps.
+- Manual real-doc NOT_FOUND improved from `0.8941` at 50 steps to `0.6235` at 100 steps, but remains far from solved.
+- OOD sanity improved to `0.20` false-answer rate at 100 steps.
+- DocMiniBench overall exact match at 100 steps (`0.5333`) is slightly above base strict SmolVLM2 500M, but old DocMiniBench NOT_FOUND remains demoted/exploratory.
+- Over-abstention on answerable DocMiniBench rows was 0/100 for both LoRA checkpoints in this run.
+
+## Abstention Likelihood Diagnostic
+
+See `reports/abstention_likelihood_analysis.md`. On the first 20 controlled NOT_FOUND rows, `NOT_FOUND` was top-ranked for 2/20 base SmolVLM2 rows, 18/20 LoRA rows, 19/20 SmolVLM2 2.2B rows, and 20/20 Qwen2.5-VL-3B rows.

@@ -37,9 +37,7 @@ exploratory/demoted because absence was not mechanically proven.
 CPU-only smoke and tests:
 
 ```bash
-python -m venv .venv
-. .venv/bin/activate
-pip install -r requirements.txt
+make env
 make test
 make smoke
 ```
@@ -72,11 +70,15 @@ data/images:
 
 ```bash
 make setup-data
+make env
 make verify-data
+make check-full
 ```
 
 `make setup-data` downloads the documented artifact with `curl -L`, verifies
 SHA256, extracts repo-root-relative paths, and then runs `make verify-data`.
+It can run before `.venv` exists because verification uses
+`BOOTSTRAP_PYTHON ?= python3` and only the Python standard library.
 The default artifact URLs are:
 
 ```bash
@@ -176,6 +178,11 @@ SmolVLM2 500M LoRA PoC, adapted-model evaluation, bounded abstention-margin
 diagnostics, and compact result printing. It does not overwrite frozen
 historical `outputs/*.jsonl` or `reports/*.md`; all new files go under the
 timestamped full-reproduction directories.
+
+`make check-full` only needs the lightweight `make env` environment. If torch is
+not installed yet, it falls back to `nvidia-smi` for CUDA detection and reports
+that `make full` will install `requirements-gpu.txt` into this clone's `.venv`.
+`make full` and `make reproduce-mini` depend on `gpu-env`.
 
 Expected runtime is roughly 1-3 hours with warm model cache and longer with a
 cold cache. Disk needs depend on whether reference models are enabled. Sharing a

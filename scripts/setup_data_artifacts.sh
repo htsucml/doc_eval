@@ -5,7 +5,7 @@ DEFAULT_DATA_URL="https://www.dropbox.com/scl/fi/tu1a5eo7itq55nrrslahv/doc_eval_
 DEFAULT_SHA_URL="https://www.dropbox.com/scl/fi/gqhgo4sotzjk1u5muec5s/doc_eval_external_artifacts_20260614_data_v1.sha256?rlkey=ypmqr51094aqhphz3vyqrt4z8&st=4tgplkyu&dl=1"
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PYTHON="${PYTHON:-$ROOT/.venv/bin/python}"
+BOOTSTRAP_PYTHON="${BOOTSTRAP_PYTHON:-python3}"
 EXTRACT_ROOT="${DOC_EVAL_EXTRACT_ROOT:-$ROOT}"
 DATA_URL="${DOC_EVAL_DATA_URL:-$DEFAULT_DATA_URL}"
 SHA_VALUE="${DOC_EVAL_DATA_SHA256:-}"
@@ -57,9 +57,9 @@ fi
 tar -xzf "$ARCHIVE" -C "$EXTRACT_ROOT"
 
 if [[ "$EXTRACT_ROOT" == "$ROOT" ]]; then
-  make verify-data
+  make verify-data BOOTSTRAP_PYTHON="$BOOTSTRAP_PYTHON"
 else
-  "$PYTHON" "$ROOT/scripts/audit_data_dependencies.py" \
+  "$BOOTSTRAP_PYTHON" "$ROOT/scripts/audit_data_dependencies.py" \
     --root "$EXTRACT_ROOT" \
     --report reports/data_setup_status.md \
     --json-report reports/data_setup_status.json

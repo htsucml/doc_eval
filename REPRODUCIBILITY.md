@@ -17,10 +17,7 @@ If using an archive instead of Git, unpack it and `cd` into the repository root.
 CPU-only smoke:
 
 ```bash
-python -m venv .venv
-. .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
+make env
 ```
 
 Alternatively, use the lightweight cloud bootstrap:
@@ -71,7 +68,9 @@ If the clone does not include external data/image artifacts, install them first:
 
 ```bash
 make setup-data
+make env
 make verify-data
+make check-full
 ```
 
 The default setup target uses these direct-download artifact URLs:
@@ -86,6 +85,10 @@ You may instead set `DOC_EVAL_DATA_SHA256=<hex>` to verify against a literal
 hash. The archive is expected to extract repo-root-relative paths such as
 `data/...`, `outputs/...`, and `reports/...`; it must not contain `.venv`,
 model weights, Hugging Face cache files, or local backups.
+
+`make setup-data` and `make verify-data` can run before `.venv` exists. They use
+`BOOTSTRAP_PYTHON ?= python3` because the data audit script uses only the
+standard library.
 
 ```bash
 make test
@@ -205,6 +208,10 @@ Cache behavior:
 The preflight reports the resolved cache path and free disk space. It does not
 fail merely because the cache is under `/root`; it fails only if the selected
 cache/output filesystem lacks enough free space for the requested mode.
+
+`make check-full` can run after the lightweight `make env` step. If torch is not
+installed yet, it uses `nvidia-smi` as a CUDA-host check and warns that
+`make full` will install `requirements-gpu.txt` into this clone's `.venv`.
 
 ## 9. Build Paper
 
