@@ -1,0 +1,24 @@
+# Error Report
+
+| capability | id | answer_type | question | ground_truth | parsed_answer | strict_exact_match | answer_in_output | failure_type | failure_hint | confidence | error |
+| --- | --- | --- | --- | --- | --- | ---: | ---: | --- | --- | ---: | --- |
+| not_found | notfound-ood-sanity-v0-001 | abstain | What is the invoice number? | NOT_FOUND | 197 | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-002 | abstain | What is the vendor tax ID? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-003 | abstain | What is the routing number? | NOT_FOUND | 1234567890. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-004 | abstain | What is the tracking number? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-005 | abstain | What is the invoice number? | NOT_FOUND | 12. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-006 | abstain | What is the vendor tax ID? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-007 | abstain | What is the routing number? | NOT_FOUND | 1 | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-008 | abstain | What is the tracking number? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-009 | abstain | What is the invoice number? | NOT_FOUND | 19. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-010 | abstain | What is the vendor tax ID? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-011 | abstain | What is the routing number? | NOT_FOUND | 1234567890 | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-012 | abstain | What is the tracking number? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-013 | abstain | What is the invoice number? | NOT_FOUND | 10. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-014 | abstain | What is the vendor tax ID? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-015 | abstain | What is the routing number? | NOT_FOUND | 1234567890. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-016 | abstain | What is the tracking number? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-017 | abstain | What is the invoice number? | NOT_FOUND | 10. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-018 | abstain | What is the vendor tax ID? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-019 | abstain | What is the routing number? | NOT_FOUND | 1234567890. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |
+| not_found | notfound-ood-sanity-v0-020 | abstain | What is the tracking number? | NOT_FOUND | 0. | 0.0 | 0.0 | false_answer_on_unanswerable | The model answered instead of abstaining on an unanswerable sample. |  |  |

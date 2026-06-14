@@ -1,0 +1,133 @@
+{
+  "benchmark_path": "data/notfound_ood_sanity_v0.jsonl",
+  "benchmark_sha256": "9f90d911953f6cc31e8837cac790a399b791bafb1135396c1273c9faf7baba34",
+  "created_utc": "2026-06-13T07:53:50.497108+00:00",
+  "dataset": "notfound_ood_sanity_v0",
+  "generator": "scripts/build_notfound_controlled_v0.py",
+  "image_count": 20,
+  "image_dir": "data/notfound_ood_sanity_v0_images",
+  "row_count": 20,
+  "rows": [
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-001",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-001.png",
+      "original_image_sha256": "bec484e03d41daaca8a67d3e4198b9d7ce24fffa75d8dd03ae7c0c36a8f95f46"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-002",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-002.png",
+      "original_image_sha256": "68cbb05fa3c03e753e53c482205624ab8310c3f1cd53c1a5cb218d17fed6ba2d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-003",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-003.png",
+      "original_image_sha256": "fddecdf6779f5e3ee37b8e8a598d6245217092ce107bfe16930bbd783782457d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-004",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-004.png",
+      "original_image_sha256": "d36d2bca0d869a5c32ebf3badcaa87c88b3b70942c8e943ddd792f33c91fdcab"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-005",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-005.png",
+      "original_image_sha256": "a5c57878b486c1b8ff9f8d353f8b03686d191a14bb8bbbb893b1651585eb041e"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-006",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-006.png",
+      "original_image_sha256": "68cbb05fa3c03e753e53c482205624ab8310c3f1cd53c1a5cb218d17fed6ba2d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-007",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-007.png",
+      "original_image_sha256": "b43982b0c85c87bce1e7a4f52e78eec4cbfc15c37cc947d60db365ae0637c71e"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-008",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-008.png",
+      "original_image_sha256": "d36d2bca0d869a5c32ebf3badcaa87c88b3b70942c8e943ddd792f33c91fdcab"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-009",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-009.png",
+      "original_image_sha256": "544ec489db80d67ef959cc2406f07dc1f3895a28d84cff8e5bea58fa87c34012"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-010",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-010.png",
+      "original_image_sha256": "68cbb05fa3c03e753e53c482205624ab8310c3f1cd53c1a5cb218d17fed6ba2d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-011",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-011.png",
+      "original_image_sha256": "a99d4e3da7ab2c74da05e683a8d924bf9ab65e6b3ffaee943b06ae5e95588147"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-012",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-012.png",
+      "original_image_sha256": "d36d2bca0d869a5c32ebf3badcaa87c88b3b70942c8e943ddd792f33c91fdcab"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-013",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-013.png",
+      "original_image_sha256": "45eda6d2b5081f0fba15be59150f20ff1b85c42308f8de4f0de05094ec2c75e9"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-014",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-014.png",
+      "original_image_sha256": "68cbb05fa3c03e753e53c482205624ab8310c3f1cd53c1a5cb218d17fed6ba2d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-015",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-015.png",
+      "original_image_sha256": "51470b9a62760ba6534610cfe38a5ef298f72022368575bdd5b5819e09e0528d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-016",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-016.png",
+      "original_image_sha256": "d36d2bca0d869a5c32ebf3badcaa87c88b3b70942c8e943ddd792f33c91fdcab"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-017",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-017.png",
+      "original_image_sha256": "88688cfcca8c20a319383f2fcaa9683910f1289b6cb082af03526a7b62cb81cb"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-018",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-018.png",
+      "original_image_sha256": "68cbb05fa3c03e753e53c482205624ab8310c3f1cd53c1a5cb218d17fed6ba2d"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-019",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-019.png",
+      "original_image_sha256": "a354dcaf4c2b51684fa6d0f4012253c7617b9155874a028f9a9af1a64db11175"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-ood-sanity-v0-020",
+      "image_path": "data/notfound_ood_sanity_v0_images/notfound-ood-sanity-v0-020.png",
+      "original_image_sha256": "d36d2bca0d869a5c32ebf3badcaa87c88b3b70942c8e943ddd792f33c91fdcab"
+    }
+  ],
+  "source_dataset": "controlled_synthetic"
+}

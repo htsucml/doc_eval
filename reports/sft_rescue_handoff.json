@@ -1,0 +1,20 @@
+{
+  "blockers": [],
+  "caveats": [
+    "Bounded methodology PoC only; not optimized full training.",
+    "Training data is controlled synthetic train-only; no eval rows/images used."
+  ],
+  "checkpoint_path": "outputs/lora_sft_poc_real/smolvlm2_500m_video_20260613T162714Z",
+  "completed_steps": 50,
+  "hf_model_id": "HuggingFaceTB/SmolVLM2-500M-Video-Instruct",
+  "loss_first": 1.155880331993103,
+  "loss_last": 0.17790615558624268,
+  "reload_verified": true,
+  "status": "real_training_completed",
+  "target_model": "smolvlm2_500m_video",
+  "timestamp_utc": "2026-06-13T16:28:18.951730+00:00",
+  "total_parameters": 508301504,
+  "train_path": "data/sft_docvqa_template_train_v0.jsonl",
+  "trainable_parameters": 819200,
+  "val_path": "data/sft_docvqa_template_val_v0.jsonl"
+}

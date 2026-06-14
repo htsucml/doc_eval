@@ -18,6 +18,7 @@ class SmolVLMAdapter(VLMAdapter):
         self._model = None
         self._device = "cpu"
         self._generation_kwargs: Dict[str, Any] = {}
+        self._peft_adapter_path: str | None = None
 
     @property
     def model_id(self) -> str:
@@ -59,6 +60,14 @@ class SmolVLMAdapter(VLMAdapter):
             self.model_id,
             torch_dtype=dtype,
         )
+        peft_adapter_path = self.runtime.get("peft_adapter_path") or self.config.get("peft_adapter_path")
+        if peft_adapter_path:
+            try:
+                from peft import PeftModel
+            except Exception as exc:
+                raise RuntimeError(f"Loading PEFT adapter requires peft. Original import error: {exc}") from exc
+            self._model = PeftModel.from_pretrained(self._model, peft_adapter_path)
+            self._peft_adapter_path = str(peft_adapter_path)
         self._model.to(requested_device)
         self._model.eval()
         self._device = requested_device
@@ -108,6 +117,7 @@ class SmolVLMAdapter(VLMAdapter):
             "error": None,
             "inference_config": {
                 "device": self._device,
+                "peft_adapter_path": self._peft_adapter_path,
                 **self._generation_kwargs,
             },
         }

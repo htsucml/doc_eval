@@ -1,0 +1,15 @@
+slice_type,slice_name,slice,count,exact_match,answer_in_output,anls,anls_applicable_count,relaxed_numeric,relaxed_numeric_applicable_count,not_found_false_answer_rate,not_found_applicable_count,avg_latency_s,error_rate
+overall,overall,overall,120,0.4417,0.475,0.5818,51,0.6735,49,1.0,20,0.4863,0.0
+capability,chart_numeric,chart_numeric,20,0.3,0.3,0.25,4,0.375,16,,0,0.4743,0.0
+capability,domain_terms,domain_terms,20,0.75,0.45,0.7071,11,0.8889,9,,0,0.4245,0.0
+capability,layout_binding,layout_binding,20,0.4,0.55,0.5786,19,1.0,1,,0,0.5257,0.0
+capability,not_found,not_found,20,0.0,0.0,,0,,0,1.0,20,0.6437,0.0
+capability,ocr_exact,ocr_exact,20,0.45,0.65,0.4398,11,0.6667,9,,0,0.4634,0.0
+capability,table_lookup,table_lookup,20,0.75,0.9,0.8435,6,0.8571,14,,0,0.3865,0.0
+answer_type,abstain,abstain,20,0.0,0.0,,0,,0,1.0,20,0.6437,0.0
+answer_type,code,code,11,0.6364,0.0909,0.7071,11,,0,,0,0.4077,0.0
+answer_type,currency,currency,3,1.0,1.0,,0,1.0,3,,0,0.4609,0.0
+answer_type,float,float,7,0.5714,0.5714,,0,0.5714,7,,0,0.4279,0.0
+answer_type,integer,integer,23,0.8696,0.8696,,0,0.8696,23,,0,0.3791,0.0
+answer_type,number,number,16,0.3125,0.3125,,0,0.375,16,,0,0.5258,0.0
+answer_type,short_text,short_text,40,0.35,0.6,0.5473,40,,0,,0,0.4873,0.0

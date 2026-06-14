@@ -1,0 +1,19 @@
+{
+  "composition": {
+    "controlled_synthetic_negative_train": 250,
+    "controlled_synthetic_negative_val": 40,
+    "controlled_synthetic_positive_train": 250,
+    "controlled_synthetic_positive_val": 40,
+    "native_template_swapped_noisy_train": 0,
+    "native_template_swapped_omitted_reason": "No non-evaluation real document images were locally available; evaluation images/rows were excluded by hard constraint."
+  },
+  "created_utc": "2026-06-13T16:18:43.260255+00:00",
+  "image_dir": "data/sft_docvqa_template_train_v0_images",
+  "intended_use": "sft_methodology_poc_train_only",
+  "not_for_primary_eval": true,
+  "seed": 20260615,
+  "train_path": "data/sft_docvqa_template_train_v0.jsonl",
+  "train_rows": 500,
+  "val_path": "data/sft_docvqa_template_val_v0.jsonl",
+  "val_rows": 80
+}

@@ -1,0 +1,14 @@
+slice_type,slice_name,slice,count,exact_match,anls,anls_applicable_count,relaxed_numeric,relaxed_numeric_applicable_count,not_found_false_answer_rate,not_found_applicable_count,avg_latency_s,error_rate
+overall,overall,overall,7,0.7143,1.0,4,0.5,2,1.0,1,0.01,0.0
+capability,chart_numeric,chart_numeric,1,1.0,1.0,1,,0,,0,0.01,0.0
+capability,domain_terms,domain_terms,1,1.0,1.0,1,,0,,0,0.01,0.0
+capability,layout_binding,layout_binding,1,1.0,,0,1.0,1,,0,0.01,0.0
+capability,not_found,not_found,1,0.0,,0,,0,1.0,1,0.01,0.0
+capability,ocr_exact,ocr_exact,1,1.0,1.0,1,,0,,0,0.01,0.0
+capability,robustness_optional,robustness_optional,1,1.0,1.0,1,,0,,0,0.01,0.0
+capability,table_lookup,table_lookup,1,0.0,,0,0.0,1,,0,0.01,0.0
+answer_type,abstain,abstain,1,0.0,,0,,0,1.0,1,0.01,0.0
+answer_type,code,code,1,1.0,1.0,1,,0,,0,0.01,0.0
+answer_type,currency,currency,1,1.0,,0,1.0,1,,0,0.01,0.0
+answer_type,integer,integer,1,0.0,,0,0.0,1,,0,0.01,0.0
+answer_type,short_text,short_text,3,1.0,1.0,3,,0,,0,0.01,0.0

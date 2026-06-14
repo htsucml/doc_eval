@@ -125,6 +125,7 @@ def run_eval(
     device: str = "cpu",
     limit: int | None = None,
     capability: str | None = None,
+    peft_adapter_path: str | None = None,
 ) -> tuple[str, str]:
     random.seed(7)
     benchmark_rows = load_jsonl(benchmark_path, validator=validate_benchmark_row)
@@ -135,7 +136,7 @@ def run_eval(
     adapter, model_cfg = load_adapter(
         model_name,
         allow_real_models,
-        runtime={"device": device, "seed": 7},
+        runtime={"device": device, "seed": 7, "peft_adapter_path": peft_adapter_path},
     )
     eval_cfg = resolve_eval_config(config_path)
     prompt_mode = eval_cfg["prompt_mode"]
@@ -189,6 +190,7 @@ def run_eval(
         "seed": 7,
         "limit": limit,
         "capability": capability,
+        "peft_adapter_path": peft_adapter_path,
         "cwd": os.getcwd(),
     }
     write_json(meta_path, metadata)
@@ -205,6 +207,7 @@ def main() -> None:
     parser.add_argument("--capability", default=None)
     parser.add_argument("--device", choices=["cpu", "cuda", "mps"], default="cpu")
     parser.add_argument("--allow-real-models", action="store_true")
+    parser.add_argument("--peft-adapter-path", default=None)
     args = parser.parse_args()
 
     out_path, meta_path = run_eval(
@@ -216,6 +219,7 @@ def main() -> None:
         device=args.device,
         limit=args.limit,
         capability=args.capability,
+        peft_adapter_path=args.peft_adapter_path,
     )
     print(f"wrote_predictions={out_path}")
     print(f"wrote_metadata={meta_path}")

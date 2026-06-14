@@ -1,0 +1,313 @@
+{
+  "benchmark_path": "data/notfound_controlled_v0.jsonl",
+  "benchmark_sha256": "0d02362d8397e4b0e4e58caa645badfd897675f93627454b376ff47a727ab7fb",
+  "created_utc": "2026-06-13T07:53:49.187117+00:00",
+  "dataset": "notfound_controlled_v0",
+  "generator": "scripts/build_notfound_controlled_v0.py",
+  "image_count": 50,
+  "image_dir": "data/notfound_controlled_v0_images",
+  "row_count": 50,
+  "rows": [
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-001",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-001.png",
+      "original_image_sha256": "356e4e859db0352a0d8b0db35a8cc9303ae07bd68ed0b13e1dc6287f42144891"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-002",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-002.png",
+      "original_image_sha256": "1ce7980954ac1465d3925bf50fd6552289ce8f858546b5e7276e340fd16c5fee"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-003",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-003.png",
+      "original_image_sha256": "b2fa8d1803b565af2f913be52e2520a5b7cecb4083cd802c68e41b957353ee72"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-004",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-004.png",
+      "original_image_sha256": "5303505929e0479b4359a92b279c270fcfd66147a57e8c59905a847b4668f1ab"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-005",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-005.png",
+      "original_image_sha256": "711a956047656c44b98cc1eeccfe1b7d4e685f8f249b45f5ddad9529d39e0391"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-006",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-006.png",
+      "original_image_sha256": "b492b8443fbf69d5d2f720cb9bf95a3ec6ad845e0f08931268583c6bc5313739"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-007",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-007.png",
+      "original_image_sha256": "bc3b61df945a3e978ae5542da28e285cd634de8b5de60b1bc8e050e778d69851"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-008",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-008.png",
+      "original_image_sha256": "025b430a470ac11b428776f3ed4a78463a7cb3abb7252b414a78c09c4e0a7c5a"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-009",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-009.png",
+      "original_image_sha256": "7b247828e7b5fde12e0d106cb9b4da9987febd924d3a662816b21bcb191f8107"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-010",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-010.png",
+      "original_image_sha256": "87d4e0a262f5043dd2a6e5c8ce9df55f6851e7c0a3dfa6018e0fcd2e9c7572cd"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-011",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-011.png",
+      "original_image_sha256": "7066ff88e196fb7da12f13078fa6bd7099235b644cf6654cba52b58b0b3c92dc"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-012",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-012.png",
+      "original_image_sha256": "df0d867d7a45d0c722689e423374c92e9279304fd3e430a819f3d6c0aa2071b2"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-013",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-013.png",
+      "original_image_sha256": "343c9b3157e8ea9a88e54ae59a5c84f641e6dd8e61ba2a1c7fc11852d6389a45"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-014",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-014.png",
+      "original_image_sha256": "7c2441829ef5f4a972b5e3cdbfeb334bd42a87937ee27c829b86bf59e621f164"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-015",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-015.png",
+      "original_image_sha256": "dd6d982d7990ca48f40f44b15b8d1dd277ba2cb3a7241adf88eaca12a04f68af"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-016",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-016.png",
+      "original_image_sha256": "d14a4a5c892d770df317aa60723fa3bcf56bc2d6578e6ecd6a46762e84f58ee7"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-017",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-017.png",
+      "original_image_sha256": "17d0d2170aaca50b19e89889d9770b779212f2f3f7cf118f7aadd87384d4d578"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-018",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-018.png",
+      "original_image_sha256": "b9bbe399de66e5b936a53744c33d0e5e2d1b632d8ebbdbc3695c2bf455cb63c6"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-019",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-019.png",
+      "original_image_sha256": "882c3053df319362481c17ff32f1acd0f955b3514b57d6f3397975825f930ec7"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-020",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-020.png",
+      "original_image_sha256": "1df157d5007540eba696e74088210dfe0d011f254bd1bd8870671ac08f6ade72"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-021",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-021.png",
+      "original_image_sha256": "a1952366c586ee64f8f9b639901c691f9211d9fa2427e759e6241ad301339a6e"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-022",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-022.png",
+      "original_image_sha256": "87803d33e7089ef87b5a4049c47df3e16efa34aab0eeddceb4ba5246242ccf39"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-023",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-023.png",
+      "original_image_sha256": "31a8bdd7aa8ea7fd9b9c5f1623abf07662537be353a3ae1a201f7056a0918fcf"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-024",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-024.png",
+      "original_image_sha256": "d3ebd92e7d080cc257cddf5923270cb569fffe78b44ed5889fdfac0376cfd5df"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-025",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-025.png",
+      "original_image_sha256": "a71acac7fae24c8c9b1a5a2a78a7d3df0bbd9429c95ef91330fe87efc94f1263"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-026",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-026.png",
+      "original_image_sha256": "6a60aacedb77c67ce48976ff516fea4a05ff615e68d764aa4101bc55eb762416"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-027",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-027.png",
+      "original_image_sha256": "5fcbcc022ec898299528de4a1137eaac5ec7906dd63c6995b9224fa46fb968b1"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-028",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-028.png",
+      "original_image_sha256": "e0746b8a6b2924a064e14fed597a3fca011e9df04ceb658d7fe6553e19a09bec"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-029",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-029.png",
+      "original_image_sha256": "8a9c4504acd5cf703dd1da7bee91b78a0554d77f3d8f0681d0674b97a8f38b24"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-030",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-030.png",
+      "original_image_sha256": "06df005afbf3de0a7f7688abc732ee7185e2aa3c889b3a6b368475398840b12c"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-031",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-031.png",
+      "original_image_sha256": "2dae92a582ed64f15bae4eed9e2b4dd427e0a5f020d8eebf68f24ac9ae4f70ee"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-032",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-032.png",
+      "original_image_sha256": "7b5ab98c90eb667dedaf7b3879bb3acec2f0de20714562b5e16556dd88bb761e"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-033",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-033.png",
+      "original_image_sha256": "90eb2ec3c53ef593ca2c4ff714461c0907d300c35a633d11dd3653f90221bb3e"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-034",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-034.png",
+      "original_image_sha256": "943c4eb018232cc67760f4f705f16566f7703c8f838954119a504556bf4d9138"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-035",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-035.png",
+      "original_image_sha256": "0591a8a27b0ba960969f95aa2026af53b253515025c7339ccc9d426f39f195e2"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-036",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-036.png",
+      "original_image_sha256": "55a75e73ff2e4c01864db5952211e42e61d86337e563b49ced125053d7fcb6e4"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-037",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-037.png",
+      "original_image_sha256": "4d02abe28a26886647c4172ac9db5e39eda75ec57025bf0a2569f15ec5d41ea0"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-038",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-038.png",
+      "original_image_sha256": "29e4f2476a46f3de90729eb223a7e1d65d3b0fc19fb2ea9ab6ab21026587deea"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-039",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-039.png",
+      "original_image_sha256": "4f272f0ab5b85153cc6357a5d332d9c2744b362d023224877b7d341f4d441f44"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-040",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-040.png",
+      "original_image_sha256": "6bcee3a252e1e64e89eb53b3daaa58895fb0c3e25c957d0758c85d72a5d301ac"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-041",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-041.png",
+      "original_image_sha256": "f9555ef560d66542e3ea460c39da95896a662a885d0542621448c528cc139fee"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-042",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-042.png",
+      "original_image_sha256": "176c046f9c125dbc7c871fe13ee6eb7429f3308c00b4ff00572ffac3f7074de1"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-043",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-043.png",
+      "original_image_sha256": "a1541b0d561f923d3e558d5487838d4aa40e30f118baa485fdeb787ff60d0431"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-044",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-044.png",
+      "original_image_sha256": "3f805721f89305cd6e15e79a52df6b0371909be886b0a39ed41e37670038977a"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-045",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-045.png",
+      "original_image_sha256": "8a3ecb7599818c737c6dc6bd208053a303d55807c41408f1d129877a058311a9"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-046",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-046.png",
+      "original_image_sha256": "0a9cd7b9f5861c54819bf24b64cb94283e53f1f347e6dee12b5d14d2bfb729ba"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-047",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-047.png",
+      "original_image_sha256": "23df8069584466e85ebc7131d4b71a19851ca9df8ebf2ac26771c4b1d091dba7"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-048",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-048.png",
+      "original_image_sha256": "a9696ab6dd994da830a22c0f9030177259e070cbc0e98ccf5d7d7bc085f50a76"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-049",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-049.png",
+      "original_image_sha256": "2afee37df8c88ee50c1139637339b272d7df21aeb1702b3b6e01ab9c761b1605"
+    },
+    {
+      "absence_check_result": true,
+      "id": "notfound-controlled-v0-050",
+      "image_path": "data/notfound_controlled_v0_images/notfound-controlled-v0-050.png",
+      "original_image_sha256": "ebad65b17618811d66f569d572f570c6a05573fe4d1efd615e44a42c45ba5638"
+    }
+  ],
+  "source_dataset": "controlled_synthetic"
+}

@@ -1,0 +1,4 @@
+slice_type,slice_name,slice,count,exact_match,answer_in_output,anls,anls_applicable_count,relaxed_numeric,relaxed_numeric_applicable_count,not_found_false_answer_rate,not_found_applicable_count,avg_latency_s,error_rate
+overall,overall,overall,85,0.0471,0.0471,,0,,0,0.9529,85,0.5221,0.0
+capability,not_found,not_found,85,0.0471,0.0471,,0,,0,0.9529,85,0.5221,0.0
+answer_type,abstain,abstain,85,0.0471,0.0471,,0,,0,0.9529,85,0.5221,0.0

@@ -1,0 +1,15 @@
+slice_type,slice_name,slice,count,exact_match,anls,anls_applicable_count,relaxed_numeric,relaxed_numeric_applicable_count,not_found_false_answer_rate,not_found_applicable_count,avg_latency_s,error_rate
+overall,overall,overall,120,0.1667,0.0,51,0.0,49,,0,0.01,0.0
+capability,chart_numeric,chart_numeric,20,0.0,0.0,4,0.0,16,,0,0.01,0.0
+capability,domain_terms,domain_terms,20,0.0,0.0,11,0.0,9,,0,0.01,0.0
+capability,layout_binding,layout_binding,20,0.0,0.0,19,0.0,1,,0,0.01,0.0
+capability,not_found,not_found,20,1.0,,0,,0,,0,0.01,0.0
+capability,ocr_exact,ocr_exact,20,0.0,0.0,11,0.0,9,,0,0.01,0.0
+capability,table_lookup,table_lookup,20,0.0,0.0,6,0.0,14,,0,0.01,0.0
+answer_type,abstain,abstain,20,1.0,,0,,0,,0,0.01,0.0
+answer_type,code,code,11,0.0,0.0,11,,0,,0,0.01,0.0
+answer_type,currency,currency,3,0.0,,0,0.0,3,,0,0.01,0.0
+answer_type,float,float,7,0.0,,0,0.0,7,,0,0.01,0.0
+answer_type,integer,integer,23,0.0,,0,0.0,23,,0,0.01,0.0
+answer_type,number,number,16,0.0,,0,0.0,16,,0,0.01,0.0
+answer_type,short_text,short_text,40,0.0,0.0,40,,0,,0,0.01,0.0
