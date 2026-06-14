@@ -78,7 +78,8 @@ Expected smoke artifacts are timestamped:
 - `reports/smoke/dummy_results_<timestamp>.csv`
 - `reports/smoke/dummy_results_<timestamp>.md`
 
-Run a small GPU mini reproduction if CUDA and model weights are available:
+Optionally run a small bounded GPU mini reproduction if CUDA and model weights
+are available:
 
 ```bash
 make reproduce-mini
@@ -92,6 +93,12 @@ Expected mini artifacts are timestamped:
 Runtime depends on model cache state. On a warmed GPU cache, the mini run should
 finish in a few minutes; first-time model downloads can take longer and require
 several GB of workspace storage.
+
+By default, `make reproduce-mini` evaluates only 5 controlled NOT_FOUND rows
+with `smolvlm2_500m_video`, applies a 20-minute timeout, does not train, and
+does not run `>1B` reference models. Override only when intentionally running a
+different bounded subset, for example `MINI_MODEL=smolvlm_500m MINI_LIMIT=5
+make reproduce-mini`.
 
 Regenerate selected aggregate checks from existing predictions:
 
@@ -136,7 +143,8 @@ Paper source:
 ## Hardware Notes
 
 - CPU is sufficient for `make test` and `make smoke`.
-- `make reproduce-mini` and full real-model reproduction require CUDA.
+- `make reproduce-mini` is optional and requires CUDA. Full real-model
+  reproduction requires more GPU time and storage.
 - The validated cache route is `/workspace/hf_home`; keep Hugging Face caches
   off `/root` on small RunPod root disks.
 - SmolVLM2 500M fits on modest CUDA devices. SmolVLM2 2.2B and Qwen2.5-VL 3B

@@ -1,6 +1,8 @@
 PYTHON ?= .venv/bin/python
 DEVICE ?= cuda
 MINI_MODEL ?= smolvlm2_500m_video
+MINI_LIMIT ?= 5
+MINI_TIMEOUT ?= 20m
 STAMP ?= $(shell date -u +%Y%m%dT%H%M%SZ)
 SMOKE_BENCH ?= outputs/smoke/docminibench_sample_$(STAMP).jsonl
 SMOKE_PREDS ?= outputs/smoke/dummy_preds_$(STAMP).jsonl
@@ -27,8 +29,9 @@ smoke:
 reproduce-mini:
 	$(PYTHON) -c "import torch; raise SystemExit(0 if torch.cuda.is_available() else 'CUDA is required for make reproduce-mini')"
 	mkdir -p outputs/reproduce_mini reports/reproduce_mini
+	@echo "Running optional bounded mini reproduction: model=$(MINI_MODEL), limit=$(MINI_LIMIT), timeout=$(MINI_TIMEOUT). This target does not train."
 	HF_HOME=/workspace/hf_home HF_HUB_CACHE=/workspace/hf_home/hub HUGGINGFACE_HUB_CACHE=/workspace/hf_home/hub HF_DATASETS_CACHE=/workspace/hf_home/datasets \
-	$(PYTHON) scripts/eval_model.py --model $(MINI_MODEL) --benchmark data/notfound_controlled_v0.jsonl --limit 5 --out $(MINI_PREDS) --config configs/eval_not_found_strict.yaml --device $(DEVICE) --allow-real-models
+	timeout $(MINI_TIMEOUT) $(PYTHON) scripts/eval_model.py --model $(MINI_MODEL) --benchmark data/notfound_controlled_v0.jsonl --limit $(MINI_LIMIT) --out $(MINI_PREDS) --config configs/eval_not_found_strict.yaml --device $(DEVICE) --allow-real-models
 	$(PYTHON) scripts/aggregate_results.py --preds $(MINI_PREDS) --benchmark data/notfound_controlled_v0.jsonl --out $(MINI_CSV) --markdown $(MINI_MD)
 	@echo "mini_preds=$(MINI_PREDS)"
 	@echo "mini_results=$(MINI_CSV)"

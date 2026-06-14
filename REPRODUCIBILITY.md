@@ -83,7 +83,7 @@ Expected outputs:
 This path uses only the deterministic dummy adapter and should not download
 large models.
 
-## 6. Run GPU Mini Reproduction
+## 6. Optional GPU Mini Reproduction
 
 ```bash
 make reproduce-mini
@@ -99,11 +99,15 @@ Expected runtime:
 
 - Warm cache: a few minutes.
 - Cold cache: longer, depending on Hugging Face download speed.
+- Default timeout: 20 minutes.
 
 Hardware notes:
 
 - Requires CUDA.
 - SmolVLM2 500M is the default mini model.
+- The default run is bounded to 5 controlled NOT_FOUND rows.
+- This target does not train and does not run SmolVLM2 2.2B, Qwen2.5-VL 3B,
+  or any other large reference model by default.
 - Use `MINI_MODEL=smolvlm_500m make reproduce-mini` to switch to the older
   SmolVLM 500M model.
 
