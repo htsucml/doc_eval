@@ -29,6 +29,9 @@ export HUGGINGFACE_HUB_CACHE="$CACHE_ROOT/hub"
 export HF_DATASETS_CACHE="$CACHE_ROOT/datasets"
 mkdir -p "$HF_HUB_CACHE" "$HF_DATASETS_CACHE"
 
+echo "Running full reproduction preflight before creating a timestamped run directory."
+FULL_DEVICE="$FULL_DEVICE" FULL_REF_MODELS="$FULL_REF_MODELS" "$PYTHON" scripts/check_full_repro.py --device "$FULL_DEVICE" --ref-models "$FULL_REF_MODELS"
+
 OUT_DIR="outputs/full_repro/$STAMP"
 REPORT_DIR="reports/full_repro/$STAMP"
 mkdir -p "$OUT_DIR" "$REPORT_DIR"
@@ -37,6 +40,33 @@ ln -sfn "$STAMP" reports/full_repro/latest
 
 LOG="$REPORT_DIR/full_repro_commands.log"
 exec > >(tee -a "$LOG") 2>&1
+
+write_status() {
+  local status="$1"
+  local message="${2:-}"
+  "$PYTHON" - "$REPORT_DIR/run_status.json" "$status" "$message" <<'PY'
+import json
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+path = Path(sys.argv[1])
+payload = {
+    "status": sys.argv[2],
+    "message": sys.argv[3],
+    "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+}
+path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+PY
+}
+
+on_error() {
+  local rc=$?
+  write_status "failed" "run_full_repro.sh exited with status $rc"
+  exit "$rc"
+}
+trap on_error ERR
+write_status "running" "full reproduction started"
 
 run_cmd() {
   echo
@@ -76,7 +106,6 @@ echo "FULL_REF_MODELS=$FULL_REF_MODELS"
 echo "FULL_TRAIN_STEPS=$FULL_TRAIN_STEPS"
 echo "FULL_LIMIT=${FULL_LIMIT:-<full>}"
 
-run_cmd "$PYTHON" scripts/check_full_repro.py --device "$FULL_DEVICE" --ref-models "$FULL_REF_MODELS"
 run_cmd make test
 run_cmd make smoke
 
@@ -154,5 +183,7 @@ if [[ $margin_rc -ne 0 ]]; then
   echo "abstention_margin_status=failed rc=$margin_rc" | tee "$REPORT_DIR/abstention_margin_status.txt"
 fi
 
+write_status "complete" "full reproduction completed"
 run_cmd "$PYTHON" scripts/print_full_results.py --run "$STAMP" --write-handoff
+write_status "complete" "full reproduction completed and handoff written"
 echo "full_repro_complete=$STAMP"

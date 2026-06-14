@@ -70,7 +70,7 @@ If the clone does not include external data/image artifacts, install them first:
 make setup-data
 make env
 make verify-data
-make check-full
+make smoke
 ```
 
 The default setup target uses these direct-download artifact URLs:
@@ -209,9 +209,13 @@ The preflight reports the resolved cache path and free disk space. It does not
 fail merely because the cache is under `/root`; it fails only if the selected
 cache/output filesystem lacks enough free space for the requested mode.
 
-`make check-full` can run after the lightweight `make env` step. If torch is not
-installed yet, it uses `nvidia-smi` as a CUDA-host check and warns that
-`make full` will install `requirements-gpu.txt` into this clone's `.venv`.
+With the default `FULL_DEVICE=cuda`, `make check-full` validates the active
+`.venv` as a real CUDA reproduction environment. It fails if torch cannot be
+imported or if `torch.cuda.is_available()` is false. `make full` depends on
+`gpu-env`, but clean machines may still need the CUDA torch wheel appropriate
+for the host installed or selected explicitly before full reproduction.
+`make print-results` skips failed or incomplete timestamp directories and only
+prints completed full-reproduction runs.
 
 ## 9. Build Paper
 

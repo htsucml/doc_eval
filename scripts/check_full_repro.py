@@ -6,7 +6,6 @@ import argparse
 import json
 import os
 import shutil
-import subprocess
 import sys
 from pathlib import Path
 
@@ -89,22 +88,18 @@ def main() -> int:
             import torch
 
             if not torch.cuda.is_available():
-                errors.append("CUDA requested for full reproduction, but torch.cuda.is_available() is false.")
-        except Exception as exc:
-            if shutil.which("nvidia-smi") is None:
                 errors.append(
-                    f"CUDA requested, torch is not importable ({exc}), and nvidia-smi is not available. "
-                    "Run on a CUDA host or set FULL_DEVICE=cpu for non-GPU checks."
+                    "CUDA requested for full reproduction, but the active Python environment does not have "
+                    "CUDA-enabled torch: torch.cuda.is_available() is false. Install/activate the GPU "
+                    "environment for this clone, or install the CUDA torch wheel appropriate for this host, "
+                    "then rerun `make check-full`."
                 )
-            else:
-                probe = subprocess.run(["nvidia-smi", "-L"], text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-                if probe.returncode != 0:
-                    errors.append(f"CUDA requested, torch is not importable ({exc}), and nvidia-smi failed: {probe.stdout.strip()}")
-                else:
-                    warnings.append(
-                        "torch is not installed in the current environment, but nvidia-smi detected a GPU. "
-                        "`make full` will install requirements-gpu.txt into this clone's .venv."
-                    )
+        except Exception as exc:
+            errors.append(
+                f"CUDA requested for full reproduction, but the active Python environment cannot import torch: {exc}. "
+                "Install/activate GPU dependencies for this clone, or install the CUDA torch wheel appropriate "
+                "for this host, then rerun `make check-full`."
+            )
 
     required_cache_gb = args.min_cache_gb + (30 if args.ref_models == "1" else 0)
     if cache_free < required_cache_gb:

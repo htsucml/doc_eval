@@ -12,22 +12,45 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def resolve_run(run: str | None) -> tuple[str, Path, Path]:
+def is_complete_run(report_dir: Path) -> bool:
+    status_path = report_dir / "run_status.json"
+    if not status_path.exists():
+        return False
+    try:
+        status = json.loads(status_path.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    return status.get("status") == "complete" and any(report_dir.glob("*_results.csv"))
+
+
+def resolve_run(run: str | None) -> tuple[str, Path, Path] | None:
     report_base = ROOT / "reports" / "full_repro"
     output_base = ROOT / "outputs" / "full_repro"
     if run:
         run_id = run
+        report_dir = report_base / run_id
+        if not is_complete_run(report_dir):
+            return None
     else:
         latest = report_base / "latest"
+        candidates: list[str] = []
         if latest.is_symlink():
-            run_id = os.readlink(latest)
+            candidates.append(os.readlink(latest))
         elif latest.exists():
-            run_id = latest.resolve().name
-        else:
-            candidates = sorted(p.name for p in report_base.iterdir() if p.is_dir()) if report_base.exists() else []
-            if not candidates:
-                raise SystemExit("No full reproduction runs found under reports/full_repro")
-            run_id = candidates[-1]
+            candidates.append(latest.resolve().name)
+        if report_base.exists():
+            candidates.extend(reversed(sorted(p.name for p in report_base.iterdir() if p.is_dir())))
+        seen = set()
+        run_id = ""
+        for candidate in candidates:
+            if candidate in seen:
+                continue
+            seen.add(candidate)
+            if is_complete_run(report_base / candidate):
+                run_id = candidate
+                break
+        if not run_id:
+            return None
     return run_id, output_base / run_id, report_base / run_id
 
 
@@ -130,7 +153,17 @@ def main() -> int:
     parser.add_argument("--run", default=None)
     parser.add_argument("--write-handoff", action="store_true")
     args = parser.parse_args()
-    run_id, out_dir, report_dir = resolve_run(args.run)
+    resolved = resolve_run(args.run)
+    if resolved is None:
+        target = f"`{args.run}`" if args.run else "latest full reproduction"
+        print(
+            f"No complete full reproduction results found for {target}.\n\n"
+            "A valid run must contain `reports/full_repro/<timestamp>/run_status.json` "
+            "with `status: complete` and at least one `*_results.csv` file. "
+            "Run `make check-full` first, then `make full` on a CUDA-enabled environment."
+        )
+        return 0
+    run_id, out_dir, report_dir = resolved
     markdown = build_markdown(run_id, out_dir, report_dir)
     print(markdown)
     summary_path = report_dir / "compact_results.md"

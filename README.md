@@ -66,13 +66,14 @@ are intentionally rebuilding the environment.
 ## Quickstart
 
 Set up external data artifacts, if starting from a clean clone without bundled
-data/images:
+data/images. This is the CPU/data reproducibility path and does not require
+CUDA or real model downloads:
 
 ```bash
 make setup-data
 make env
 make verify-data
-make check-full
+make smoke
 ```
 
 `make setup-data` downloads the documented artifact with `curl -L`, verifies
@@ -150,10 +151,12 @@ It also updates convenience symlinks:
 - `outputs/full_repro/latest`
 - `reports/full_repro/latest`
 
-Recommended clean-clone usage on a CUDA machine:
+Recommended clean-clone usage on a CUDA machine with a CUDA-enabled torch/model
+environment active in this clone:
 
 ```bash
 export DOC_EVAL_CACHE_ROOT=/workspace/hf_home  # recommended on cloud runners when available
+make env
 make check-full
 FULL_REF_MODELS=0 make full
 make print-results
@@ -179,10 +182,13 @@ diagnostics, and compact result printing. It does not overwrite frozen
 historical `outputs/*.jsonl` or `reports/*.md`; all new files go under the
 timestamped full-reproduction directories.
 
-`make check-full` only needs the lightweight `make env` environment. If torch is
-not installed yet, it falls back to `nvidia-smi` for CUDA detection and reports
-that `make full` will install `requirements-gpu.txt` into this clone's `.venv`.
-`make full` and `make reproduce-mini` depend on `gpu-env`.
+`make check-full` validates the active `.venv` for the requested full
+reproduction mode. With the default `FULL_DEVICE=cuda`, it fails unless that
+environment can import torch and `torch.cuda.is_available()` is true. `make full`
+depends on `gpu-env`, but platform-specific CUDA torch wheels may still need to
+be installed or selected explicitly for a clean machine before full reproduction.
+`make print-results` only reports completed full-reproduction runs and skips
+failed or incomplete timestamp directories.
 
 Expected runtime is roughly 1-3 hours with warm model cache and longer with a
 cold cache. Disk needs depend on whether reference models are enabled. Sharing a
@@ -224,9 +230,11 @@ Paper source:
 
 ## Hardware Notes
 
-- CPU is sufficient for `make test` and `make smoke`.
+- CPU is sufficient for `make setup-data`, `make verify-data`, `make test`, and
+  `make smoke`.
 - `make reproduce-mini` is optional and requires CUDA. Full real-model
-  reproduction requires more GPU time and storage.
+  reproduction requires a CUDA-enabled torch/model environment, more GPU time,
+  and more storage.
 - `/workspace/hf_home` is the recommended cloud cache default when available;
   local machines can use a normal user cache. Full preflight fails only when the
   selected cache filesystem lacks enough free space.
@@ -237,6 +245,10 @@ Paper source:
 
 - `CUDA is required for make reproduce-mini`: run on a CUDA machine or use only
   `make smoke`.
+- `make check-full` reports `torch.cuda.is_available() is false`: the active
+  `.venv` is not a CUDA-capable full-reproduction environment. Install the
+  CUDA torch wheel appropriate for the host or activate the validated GPU env,
+  then rerun `make check-full`.
 - `Model ... is gated`: real models require `--allow-real-models`; tests and
   smoke intentionally avoid this path.
 - Hugging Face downloads fill `/root`: export `HF_HOME=/workspace/hf_home` and
