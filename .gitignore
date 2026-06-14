@@ -12,6 +12,9 @@ outputs/
 logs/
 reports/*.csv
 reports/*.md
+reports/smoke/
+reports/reproduce_mini/
+reports/aggregate_rebuild_*/
 !reports/survey_matrix_v0.md
 !reports/next_steps_v0.md
 !reports/dataset_plan_v0.md
@@ -58,3 +61,11 @@ src/datasets/__pycache__/
 src/datasets/source_adapters/__pycache__/
 data/docminibench_v0_images/
 data/docminibench_v0_images*/
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.pdf

@@ -1,0 +1,13 @@
+\section{Limitations}
+
+This is a bounded evaluation package, not a full benchmark paper. DocMiniBench-v0
+is small, and the original NOT\_FOUND slice is demoted. The controlled synthetic
+NOT\_FOUND set is mechanically auditable but synthetic. The manual real-document
+NOT\_FOUND set is useful auxiliary evidence, but it is
+assistant-assisted/author spot-checkable rather than fully source-annotated with
+field inventories and OCR evidence.
+
+The LoRA/SFT run is intentionally small and should not be interpreted as an
+optimized training recipe. Larger reference models are not part of the sub-1B
+target comparison. Runtime and latency values depend on the local GPU and
+software stack.

@@ -1,0 +1,17 @@
+\begin{table*}[t]
+\centering
+\small
+\begin{tabular}{llrrrrrr}
+\hline
+Model & Role & DocMini exact & DocMini ans-in & Old NF false & Controlled false & Manual false & OOD false \\
+\hline
+SmolVLM 500M & target & 0.425 & 0.5 & 1 & 1 & 0.9529 & 1 \\
+SmolVLM2 500M & target & 0.4417 & 0.475 & 1 & 0.98 & 1 & 1 \\
+SmolVLM2 500M + LoRA-100 & target PoC & 0.5333 & 0.5333 & 0.55 & 0.1 & 0.6235 & 0.2 \\
+SmolVLM2 2.2B & >1B same-family reference & 0.525 & 0.5417 & 0.4 & 0.24 & 0.4353 & 0 \\
+Qwen2.5-VL 3B & >1B external ceiling & 0.8083 & 0.8167 & 0 & 0 & 0.0353 & 0 \\
+\hline
+\end{tabular}
+\caption{Current headline metrics from existing CSV artifacts. NOT\_FOUND false-answer rates are lower-is-better. The original DocMiniBench-v0 NOT\_FOUND slice is demoted and shown only for continuity.}
+\label{tab:headline-results}
+\end{table*}

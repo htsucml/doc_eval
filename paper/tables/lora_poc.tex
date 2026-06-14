@@ -1,0 +1,15 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lrrrr}
+\hline
+Checkpoint & Doc exact & Ans-only exact & Controlled false & Manual false \\
+\hline
+Base & 0.4417 & 0.53 & 0.98 & 1.0 \\
+50 steps & 0.5083 & 0.55 & 0.30 & 0.8941 \\
+100 steps & 0.5333 & 0.55 & 0.10 & 0.6235 \\
+\hline
+\end{tabular}
+\caption{Bounded LoRA/SFT methodology PoC. The answerable-only exact-match values exclude the demoted NOT\_FOUND slice.}
+\label{tab:lora-poc}
+\end{table}

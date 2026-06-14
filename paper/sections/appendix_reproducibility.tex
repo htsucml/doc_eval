@@ -1,0 +1,8 @@
+\section{Reproducibility Notes}
+
+The recommended clean-room commands are maintained in
+\texttt{REPRODUCIBILITY.md}. A CPU-only smoke path is available through
+\texttt{make smoke}. GPU mini reproduction is available through
+\texttt{make reproduce-mini} and requires cached or downloadable Hugging Face
+weights plus \texttt{--allow-real-models}. Full reproduction of all reference
+cells requires more GPU time and storage.

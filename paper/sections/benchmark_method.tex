@@ -1,0 +1,21 @@
+\section{Benchmark and Method}
+
+DocMiniBench-v0 contains 120 rows over six capability slices:
+\texttt{ocr\_exact}, \texttt{layout\_binding}, \texttt{table\_lookup},
+\texttt{chart\_numeric}, \texttt{domain\_terms}, and \texttt{not\_found}. The
+first five slices are treated as answerable document QA controls. The original
+\texttt{not\_found} slice is retained only as an exploratory continuity cell.
+
+The primary auditable abstention benchmark is
+\texttt{notfound\_controlled\_v0}: 50 PIL-rendered documents with explicit
+present-field inventories and controlled absent fields. Each row records
+\texttt{absence\_evidence\_type=controlled\_render\_negative}. The auxiliary
+manual real-document set contains 85 rows over 23 images with
+\texttt{absence\_evidence\_type=assistant\_assisted\_author\_visual\_audit}.
+The OOD sanity set contains 20 non-document images and is not a document
+understanding benchmark.
+
+Evaluation uses strict exact match, answer-in-output, relaxed numeric scoring
+where applicable, average latency, and NOT\_FOUND false-answer rate. The
+strict NOT\_FOUND prompt asks the model to answer exactly \texttt{NOT\_FOUND}
+unless the requested field is explicitly visible.

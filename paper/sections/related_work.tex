@@ -1,0 +1,14 @@
+\section{Related Work / Context}
+
+Document VQA benchmarks such as DocVQA, ChartQA, OCR-style extraction tasks, and
+infographic QA motivate the capability slices used here: exact OCR spans,
+layout-bound key-value extraction, table lookup, numeric chart reasoning, and
+domain-specific terms. The repository does not attempt to reproduce a full
+leaderboard. Instead, it packages a small benchmark and evaluation harness that
+can be rerun on constrained hardware.
+
+The NOT\_FOUND setting is closest to answerability and hallucination-control
+evaluation. In this project, the original DocMiniBench-v0 NOT\_FOUND slice was
+audited and demoted because it used fixed templates on a weak source slice and
+did not mechanically prove absence. Controlled synthetic NOT\_FOUND and manual
+real-document NOT\_FOUND are therefore reported separately.

@@ -1,0 +1,21 @@
+\section{Results and Findings}
+
+Table~\ref{tab:headline-results} summarizes the current headline metrics from
+the repository's CSV artifacts. The target sub-1B models struggle with
+NOT\_FOUND abstention under generation: base SmolVLM2 500M has a 0.98
+false-answer rate on controlled NOT\_FOUND and 1.0 on manual real-document
+NOT\_FOUND. The 100-step LoRA PoC improves controlled false-answer rate to
+0.10 and manual real-document false-answer rate to 0.6235, while answerable-only
+DocMiniBench exact match stays approximately flat.
+
+The same-family SmolVLM2 2.2B reference improves transfer abstention compared
+with base SmolVLM2 500M, reaching 0.4353 manual real-document false-answer and
+0.0 OOD sanity false-answer. Qwen2.5-VL 3B remains the strongest external
+ceiling, especially on manual real-document NOT\_FOUND.
+
+\input{figures/manual_transfer}
+
+The likelihood and abstention-margin diagnostics in the repository are treated
+as calibration evidence only. They suggest that LoRA and scale can shift
+probability mass toward abstention, but a naive likelihood gate can over-abstain
+on answerable rows.

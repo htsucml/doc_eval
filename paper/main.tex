@@ -1,0 +1,61 @@
+\documentclass[11pt]{article}
+
+% Use the official ACL style when acl.sty is available in this directory or a
+% TeX search path. The fallback keeps the report buildable on minimal systems.
+\IfFileExists{acl.sty}{
+  \usepackage[review]{acl}
+}{
+  \usepackage[margin=1in]{geometry}
+  \usepackage[numbers]{natbib}
+}
+
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{inconsolata}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{hyperref}
+
+\input{tables/generated_at}
+
+\title{A Reproducible Small-VLM Document Understanding Evaluation with Controlled Abstention Tests}
+
+\author{DocEval Project\\
+  \texttt{/workspace/doc\_eval}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We present a bounded, reproducible document vision-language model evaluation
+focused on compact models and abstention behavior. The benchmark combines
+DocMiniBench-v0 traditional document QA capabilities with controlled synthetic,
+manual real-document, and non-document out-of-distribution NOT\_FOUND tests.
+Experiments compare sub-1B SmolVLM-family targets, a bounded LoRA/SFT
+methodology proof of concept, and clearly separated $>$1B reference-only
+models. Results are generated from committed scripts and existing CSV/JSONL
+artifacts; no result in this report is manually invented.
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/benchmark_method}
+\input{sections/experiments}
+\input{sections/results_findings}
+\input{sections/limitations}
+\input{sections/future_work}
+
+\IfFileExists{acl_natbib.bst}{
+  \bibliographystyle{acl_natbib}
+}{
+  \bibliographystyle{plainnat}
+}
+\bibliography{references}
+
+\appendix
+\input{sections/appendix_reproducibility}
+
+\end{document}

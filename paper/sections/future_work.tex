@@ -1,0 +1,12 @@
+\section{Future Work}
+
+The most important next step is collecting verified real-document negative
+examples with explicit field inventories or OCR/annotation evidence gates.
+Future modeling work should evaluate answerability verifiers, OCR evidence
+gates, distillation from the Qwen2.5-VL 3B ceiling, and preference-style
+abstention tuning. Any likelihood gate or reranker should be calibrated on held
+out data and reported with answerable over-abstention.
+
+Longer SFT sweeps should mix controlled positives, controlled negatives, and
+verified real-document negatives while preserving strict separation from all
+evaluation images and rows.
