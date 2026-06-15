@@ -1,4 +1,4 @@
-# Document VLM Evaluation Handoff
+# Reproducible Small-VLM Document Evaluation
 
 This repository packages a reproducible document-VLM evaluation for compact
 vision-language models, with special attention to NOT_FOUND / abstention
